@@ -1,11 +1,13 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { query } from '../../lib/db'
-import { hash } from 'bcrypt';
+var bcrypt = require('bcryptjs');
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { ID, FullName, Email, Password } = req.body
+  
   try {
-    hash(Password, 12, async function(err: unknown, hash: string) {
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(Password, salt, async function(err, hash) {
         if (!ID || !FullName || !Email || !Password) {
           return res
             .status(400)
@@ -21,7 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         )
     
         return res.json(results)
+      });
     });
+  
   } catch (e) {
     res.status(500).json({ message: e.message })
   }
