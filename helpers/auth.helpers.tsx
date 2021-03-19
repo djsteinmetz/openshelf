@@ -15,7 +15,7 @@ export const isAuthenticated = (fn: NextApiHandler) => async (req: NextApiReques
                 return await fn(req, res);
             }
     
-            res.writeHead(401, { Location: `http://localhost:3000/access-denied`});
+            res.writeHead(401, { Location: `/access-denied`});
             res.end();
         });
       } catch(err) {

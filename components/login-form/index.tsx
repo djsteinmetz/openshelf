@@ -33,10 +33,12 @@ export default function LoginForm() {
       const json: TokenResponse = await res.json()
       if (!res.ok) throw Error('Something went wrong')
       if (json && json?.access_token) {
+          console.log('cookie being set')
         await setAuthCookie(json.access_token);
         Router.push('/')
       }
     } catch (e) {
+        console.log('something went wrong with the login')
       throw Error(e.message)
     }
   }
