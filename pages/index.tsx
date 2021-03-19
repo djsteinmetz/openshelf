@@ -1,18 +1,31 @@
 import Skeleton from 'react-loading-skeleton'
 
-import Nav from '@/components/nav'
 import Container from '@/components/container'
 import Entries from '@/components/entries'
 
 import { useEntries } from '@/lib/swr-hooks'
+import { NextPageContext } from 'next'
+import { parseCookies } from 'helpers/cookie.helpers'
+import { isLoggedIn } from 'helpers/auth.helpers'
+import Router from 'next/router'
+import { useEffect } from 'react'
+import React from 'react'
 
-export default function IndexPage() {
+export default function IndexPage({isLoggedIn}) {
+  console.log({isLoggedIn})
+  const [loggedIn, setLoggedIn] = React.useState(false)
   const { entries, isLoading } = useEntries()
 
-  if (isLoading) {
+  useEffect(() => {
+    if (!isLoggedIn) {
+      Router.push('/login');
+    }
+    setLoggedIn(isLoggedIn);
+  }, [isLoggedIn]);
+
+  if (isLoading || !loggedIn) {
     return (
       <div>
-        <Nav />
         <Container>
           <Skeleton width={180} height={24} />
           <Skeleton height={48} />
@@ -29,10 +42,18 @@ export default function IndexPage() {
 
   return (
     <div>
-      <Nav />
       <Container>
         <Entries entries={entries} />
       </Container>
     </div>
   )
+}
+
+IndexPage.getInitialProps = (ctx: NextPageContext) => {
+  const cookies = parseCookies(ctx)
+  console.log({cookies})
+  const token = cookies['bookster.access_token'];
+  console.log({token})
+  const authorized = isLoggedIn(token);
+  return { isLoggedIn: authorized };
 }

@@ -1,7 +1,8 @@
 function Footer() {
   return (
-    <footer className="container mx-auto fixed bottom-0 right-0 left-0 flex justify-center items-center h-24">
-      <a href="https://vercel.com?utm_source=next-mysql">
+    <footer className="container h-auto py-2 mx-auto fixed bottom-0 right-0 left-0">
+      <a href="https://www.github.com/djsteinmetz" className="flex justify-center items-center">
+       <p className="mb-0">© Bookish - by DJ Steinmetz</p>
       </a>
     </footer>
   )
