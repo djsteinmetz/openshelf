@@ -16,10 +16,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     
         const results = await query(
           `
-          INSERT INTO Users (ID, Active, FullName, Email, Password, Verified)
-          VALUES (?, ?, ?, ?, ?, ?)
+          INSERT INTO Users (ID, Active, FullName, Email, Password, Verified, Roles)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
           `,
-          [ID, true, FullName, Email, hash, false]
+          [ID, true, FullName, Email, hash, false, `READER`]
         )
     
         return res.json(results)

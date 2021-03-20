@@ -1,9 +1,9 @@
 import Skeleton from 'react-loading-skeleton'
 
 import Container from '@/components/container'
-import Entries from '@/components/entries'
+import Books from '@/components/books'
 
-import { useEntries } from '@/lib/swr-hooks'
+import { useBooks } from '@/lib/swr-hooks'
 import { NextPageContext } from 'next'
 import { parseCookies } from 'helpers/cookie.helpers'
 import { isLoggedIn } from 'helpers/auth.helpers'
@@ -14,7 +14,7 @@ import React from 'react'
 export default function IndexPage({isLoggedIn}) {
   console.log({isLoggedIn})
   const [loggedIn, setLoggedIn] = React.useState(false)
-  const { entries, isLoading } = useEntries()
+  const { books, isLoading } = useBooks()
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -43,7 +43,7 @@ export default function IndexPage({isLoggedIn}) {
   return (
     <div>
       <Container>
-        <Entries entries={entries} />
+        <Books books={books} />
       </Container>
     </div>
   )

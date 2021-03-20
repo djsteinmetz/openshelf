@@ -12,9 +12,9 @@ export default function Nav() {
 
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
-    console.log('cookies from navigation index', cookies)
+    console.log("cookies from navigation index", cookies);
     const token = cookies["bookster.access_token"];
-    console.log('token from nav', token)
+    console.log("token from nav", token);
     const authorized = isLoggedIn(token);
     setLoggedIn(authorized);
   });
@@ -26,11 +26,27 @@ export default function Nav() {
           <Link href="/">
             <a className="font-bold text-3xl">Bookish</a>
           </Link>
-          {loggedIn && (
+          {!loggedIn && (
             <div>
-              <ButtonLink href="/new">New Entry</ButtonLink>
               <a
                 className="bg-black text-white p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
+                onClick={() => Router.push("/login")}
+              >
+                Login
+              </a>
+              <a
+                className="bg-black text-white p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
+                onClick={() => Router.push("/register")}
+              >
+                Register
+              </a>
+            </div>
+          )}
+          {loggedIn && (
+            <div>
+              <ButtonLink href="/new">Add Book</ButtonLink>
+              <a
+                className="text-gray-600 p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
                 onClick={() => {
                   Cookies.remove("bookster.access_token", {
                     path: "/",

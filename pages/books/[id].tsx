@@ -1,20 +1,20 @@
 import { useRouter } from 'next/router'
 
-import { useEntry } from '@/lib/swr-hooks'
+import { useBook } from '@/lib/swr-hooks'
 import Container from '@/components/container'
 import Nav from '@/components/nav'
 
-export default function EditEntryPage() {
+export default function EditBookPage() {
   const router = useRouter()
   const id = router.query.id?.toString()
-  const { data } = useEntry(id)
+  const { data } = useBook(id)
 
   if (data) {
     return (
       <>
         <Container>
-          <h1 className="font-bold text-3xl my-2">{data.title}</h1>
-          <p>{data.content}</p>
+          <h1 className="font-bold text-3xl my-2">{data.Title} by {data.Author}</h1>
+          <p>{data.Description}</p>
         </Container>
       </>
     )

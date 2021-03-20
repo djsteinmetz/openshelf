@@ -12,8 +12,8 @@ const handler: NextApiHandler = async (req, res) => {
     }
     const results = await query(
       `
-      DELETE FROM entries
-      WHERE id = ?
+      DELETE FROM Books
+      WHERE interopID = ?
   `,
       id
     )

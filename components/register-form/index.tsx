@@ -43,7 +43,7 @@ export default function RegisterForm() {
         </label>
         <input
           id="FullName"
-          className="shadow border rounded w-2/4 py-2"
+          className="shadow border rounded w-2/4 py-2 px-3"
           type="text"
           name="FullName"
           value={FullName}
@@ -56,7 +56,7 @@ export default function RegisterForm() {
         </label>
         <input
           id="Email"
-          className="shadow border rounded w-2/4 py-2"
+          className="shadow border rounded w-2/4 py-2 px-3"
           type="text"
           name="Email"
           value={Email}
@@ -69,7 +69,7 @@ export default function RegisterForm() {
         </label>
         <input
           id="Username"
-          className="shadow border rounded w-2/4 py-2"
+          className="shadow border rounded w-2/4 py-2 px-3"
           type="text"
           name="Username"
           value={ID}
@@ -81,7 +81,7 @@ export default function RegisterForm() {
           <h3 className="font-bold">Password</h3>
         </label>
         <input
-          className="shadow border rounded w-2/4 py-2"
+          className="shadow border rounded w-2/4 py-2 px-3"
           id="Password"
           type="password"
           name="Password"

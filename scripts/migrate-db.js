@@ -30,11 +30,17 @@ async function query(q) {
 // Create "entries" table if doesn't exist
 async function migrate() {
   try {
+    await query(`DROP TABLE Users`);
+    console.log('Dropped Users');
     await query(`
-    CREATE TABLE IF NOT EXISTS entries (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      title TEXT NOT NULL,
-      content TEXT NOT NULL,
+    CREATE TABLE IF NOT EXISTS Users (
+      interopID INT AUTO_INCREMENT PRIMARY KEY,
+      ID TEXT NOT NULL,
+      FullName TEXT NOT NULL,
+      Email TEXT NOT NULL,
+      Password TEXT NOT NULL,
+      Active BOOL,
+      Verified BOOL,
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at 
         TIMESTAMP 

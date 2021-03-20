@@ -8,6 +8,7 @@ export interface IUser {
     Email: string;
     Password: string;
     BookCount: number;
+    Roles: string;
 }
 
 export interface IUserListProps {

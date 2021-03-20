@@ -5,42 +5,43 @@ import { mutate } from 'swr'
 import ButtonLink from '@/components/button-link'
 import Button from '@/components/button'
 
-function Entry({ id, title, content }) {
+function Book({ id,title, author, description, genre, owner }) {
   const [deleting, setDeleting] = useState(false)
 
-  async function deleteEntry() {
+  async function deleteBook() {
     setDeleting(true)
-    let res = await fetch(`/api/delete-entry?id=${id}`, { method: 'DELETE' })
+    let res = await fetch(`/api/delete-book?id=${id}`, { method: 'DELETE' })
     let json = await res.json()
     if (!res.ok) throw Error(json.message)
-    mutate('/api/get-entries')
+    mutate('/api/get-books')
     setDeleting(false)
   }
   return (
     <div>
       <div className="flex items-center">
-        <Link href={`/entry/${id}`}>
-          <a className="font-bold py-2">{title}</a>
+        <Link href={`/books/${id}`}>
+          <a className="font-bold py-2">{title} by {author}</a>
         </Link>
         <div className="flex ml-4">
           <ButtonLink
-            href={`/entry/edit/${id}?title=${title}&content=${content}`}
+            href={`/books/edit/${id}?title=${title}&author=${author}&description=${description}&genre=${genre}`}
             className="h-5 py-0 mx-1"
           >
             Edit
           </ButtonLink>
           <Button
             disabled={deleting}
-            onClick={deleteEntry}
+            onClick={deleteBook}
             className="h-5 py-0 mx-1"
           >
             {deleting ? 'Deleting ...' : 'Delete'}
           </Button>
         </div>
       </div>
-      <p>{content}</p>
+      <p>{description}</p>
+      <p>{owner}</p>
     </div>
   )
 }
 
-export default Entry
+export default Book

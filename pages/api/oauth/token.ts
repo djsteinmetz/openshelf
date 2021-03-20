@@ -11,9 +11,9 @@ export default async function getAccessToken(
   if (req.method === "POST") {
     const result = await query(
       `
-            SELECT ID, Active, FullName, Email, Password, Verified
+            SELECT ID, Active, FullName, Email, Password, Verified, Roles
             FROM Users
-            WHERE EMail = ?
+            WHERE Email = ?
           `,
       req.body.Email
     );
@@ -32,12 +32,11 @@ export default async function getAccessToken(
           ],
         });
       }
-      console.log(result);
       if (!err && result && user?.Active) {
         const claims = {
           usr: user.ID,
           email: user.Email,
-          roles: ["BooksReader"],
+          roles: user?.Roles?.split(' ') || user?.Roles,
         };
         const jwt = sign(claims, process.env.NEXT_PUBLIC_API_SECRET, { expiresIn: "1h" });
         const decoded = verify(jwt, process.env.NEXT_PUBLIC_API_SECRET);
@@ -47,6 +46,7 @@ export default async function getAccessToken(
             access_token: jwt,
             expiresIn: decoded?.exp,
             token_type: "bearer",
+            roles: user?.Roles?.split(' ')
           });
       } else {
         return res

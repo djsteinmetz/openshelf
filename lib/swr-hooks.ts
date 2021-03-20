@@ -4,16 +4,16 @@ function fetcher(url: string) {
   return window.fetch(url).then((res) => res.json())
 }
 
-export function useEntries() {
-  const { data, error } = useSWR(`/api/get-entries`, fetcher)
+export function useBooks() {
+  const { data, error } = useSWR(`/api/get-books`, fetcher)
 
   return {
-    entries: data,
+    books: data,
     isLoading: !error && !data,
     isError: error,
   }
 }
 
-export function useEntry(id: string) {
-  return useSWR(`/api/get-entry?id=${id}`, fetcher)
+export function useBook(id: string) {
+  return useSWR(`/api/get-book?id=${id}`, fetcher)
 }
