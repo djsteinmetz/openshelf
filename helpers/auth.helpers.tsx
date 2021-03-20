@@ -1,6 +1,5 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next"
 const { verify } = require('jsonwebtoken');
-import cookie from 'cookie';
 import { AuthError } from "models/errors.interface";
 import { IDecodedToken } from "models/decoded-token.interface";
 
