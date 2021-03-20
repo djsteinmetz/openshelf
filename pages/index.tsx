@@ -54,6 +54,6 @@ IndexPage.getInitialProps = (ctx: NextPageContext) => {
   console.log({cookies})
   const token = cookies['bookster.access_token'];
   console.log({token})
-  const authorized = isLoggedIn(token, process.env.API_SECRET);
+  const authorized = isLoggedIn(token);
   return { isLoggedIn: authorized };
 }

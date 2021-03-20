@@ -10,7 +10,7 @@ export const isAuthenticated = (fn: NextApiHandler) => async (req: NextApiReques
         token = req?.headers?.authorization?.split(' ')?.[1];
     }
     try {
-        verify(token, process.env.API_SECRET, async function(err: Error, decoded: unknown) {
+        verify(token, process.env.NEXT_PUBLIC_API_SECRET, async function(err: Error, decoded: unknown) {
             if (!err && decoded) {
                 return await fn(req, res);
             }
@@ -25,7 +25,7 @@ export const isAuthenticated = (fn: NextApiHandler) => async (req: NextApiReques
 }
 
 export const generateRolesError = (token?: string): AuthError => {
-    const decoded: IDecodedToken = verify(token, process.env.API_SECRET);
+    const decoded: IDecodedToken = verify(token, process.env.NEXT_PUBLIC_API_SECRET);
     return {
         "error": "invalid_grant",
         "error_description": "User does not have the required roles to perform this action.",
@@ -42,10 +42,10 @@ export const generateRolesError = (token?: string): AuthError => {
     }
 }
 
-export const isLoggedIn = (token: string, api_secret: string): boolean => {
+export const isLoggedIn = (token: string): boolean => {
     let isAuthenticated = false;
-    console.log('following through', token, api_secret)
-    verify(token, api_secret, async function(err: Error, decoded: unknown) {
+    console.log('following through', token, process.env.NEXT_PUBLIC_API_SECRET)
+    verify(token, process.env.NEXT_PUBLIC_API_SECRET, async function(err: Error, decoded: unknown) {
         console.log(err)
         console.log(decoded)
         if (!err && decoded) {
