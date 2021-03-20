@@ -44,6 +44,7 @@ export const generateRolesError = (token?: string): AuthError => {
 
 export const isLoggedIn = (token: string): boolean => {
     let isAuthenticated = false;
+    console.log('following through', token, process.env.API_SECRET)
     verify(token, process.env.API_SECRET, async function(err: Error, decoded: unknown) {
         console.log(err)
         console.log(decoded)
