@@ -18,7 +18,7 @@ export default async function getAccessToken(
       req.body.Email
     );
     const user = result[0] as IUser;
-    bcrypt.compare(req.body.Password, user?.Password, function (err, res) {
+    bcrypt.compare(req.body.Password, user?.Password, function (err, result) {
       if (user && !user?.Active) {
         return res.status(401).json({
           error: "invalid_grant",
