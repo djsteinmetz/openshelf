@@ -18,6 +18,20 @@ export default async function getAccessToken(
       req.body.Email
     );
     const user = result[0] as IUser;
+    console.log(user);
+    if (user === undefined) {
+      return res.status(401).json({
+        error: "invalid_grant",
+        error_description: "Invalid Credentials.",
+        Errors: [
+          {
+            ErrorCode: "Auth.InvalidCredentials",
+            Message: "Username or Password are incorrect.",
+            Data: {},
+          },
+        ],
+      });
+    }
     bcrypt.compare(req.body.Password, user?.Password, function (err, result) {
       if (user && !user?.Active) {
         return res.status(401).json({

@@ -4,7 +4,7 @@ import { AuthError } from "models/errors.interface";
 import { IDecodedToken } from "models/decoded-token.interface";
 
 export const isAuthenticated = (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
-    let token = req?.cookies?.['bookster.access_token'];
+    let token = req?.cookies?.['booklical.access_token'];
     if (req?.headers?.authorization) {
         token = req?.headers?.authorization?.split(' ')?.[1];
     }
@@ -43,13 +43,20 @@ export const generateRolesError = (token?: string): AuthError => {
 
 export const isLoggedIn = (token: string): boolean => {
     let isAuthenticated = false;
-    console.log('following through', token, process.env.NEXT_PUBLIC_API_SECRET)
     verify(token, process.env.NEXT_PUBLIC_API_SECRET, async function(err: Error, decoded: unknown) {
-        console.log(err)
-        console.log(decoded)
         if (!err && decoded) {
             isAuthenticated = true;
         }
     });
     return isAuthenticated;
+}
+
+export const isAdminUser = (token: string): boolean => {
+    let isAdmin = false;
+    verify(token, process.env.NEXT_PUBLIC_API_SECRET, async function(err: Error, decoded: IDecodedToken) {
+        if (!err && decoded && decoded?.roles?.includes('ADMIN')) {
+            isAdmin = true;
+        }
+    });
+    return isAdmin;
 }

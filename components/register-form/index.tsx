@@ -37,39 +37,39 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={submitHandler}>
-      <div className="my-4 mx-auto">
+      <div className="my-4">
         <label htmlFor="FullName">
           <h3 className="font-bold">Full Name</h3>
         </label>
         <input
           id="FullName"
-          className="shadow border rounded w-2/4 py-2 px-3"
+          className="shadow border rounded py-2 px-3 w-full"
           type="text"
           name="FullName"
           value={FullName}
           onChange={(e) => setFullName(e.target.value)}
         />
       </div>
-      <div className="my-4 mx-auto">
+      <div className="my-4 w-full">
         <label htmlFor="Email">
           <h3 className="font-bold">Email</h3>
         </label>
         <input
           id="Email"
-          className="shadow border rounded w-2/4 py-2 px-3"
+          className="shadow border rounded py-2 px-3 w-full"
           type="text"
           name="Email"
           value={Email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div className="my-4 mx-auto">
+      <div className="my-4">
         <label htmlFor="Username">
           <h3 className="font-bold">Username</h3>
         </label>
         <input
           id="Username"
-          className="shadow border rounded w-2/4 py-2 px-3"
+          className="shadow border rounded py-2 px-3 w-full"
           type="text"
           name="Username"
           value={ID}
@@ -81,7 +81,7 @@ export default function RegisterForm() {
           <h3 className="font-bold">Password</h3>
         </label>
         <input
-          className="shadow border rounded w-2/4 py-2 px-3"
+          className="shadow border rounded py-2 px-3 w-full"
           id="Password"
           type="password"
           name="Password"

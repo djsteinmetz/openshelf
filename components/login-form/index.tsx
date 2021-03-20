@@ -10,7 +10,7 @@ export default function LoginForm() {
   const [submitting, setSubmitting] = useState(false);
 
   const setAuthCookie = async (token: string) => {
-    Cookies.set("bookster.access_token", token, {
+    Cookies.set("booklical.access_token", token, {
       path: "/",
     });
   };
@@ -46,26 +46,26 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={submitHandler}>
-      <div className="my-4 mx-auto">
+      <div className="my-4">
         <label htmlFor="Email">
           <h3 className="font-bold">Email</h3>
         </label>
         <input
           id="Email"
-          className="shadow border rounded w-2/4 py-2 px-3"
+          className="shadow border rounded py-2 px-3 w-full"
           type="text"
           name="Email"
           value={Email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div className="my-4 mx-auto">
+      <div className="my-4">
         <label htmlFor="Password">
           <h3 className="font-bold">Password</h3>
         </label>
         <input
           id="Password"
-          className="shadow border rounded w-2/4 py-2 px-3"
+          className="shadow border rounded py-2 px-3 w-full"
           type="password"
           name="Password"
           value={Password}

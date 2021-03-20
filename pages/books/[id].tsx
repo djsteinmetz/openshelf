@@ -7,6 +7,7 @@ import Nav from '@/components/nav'
 export default function EditBookPage() {
   const router = useRouter()
   const id = router.query.id?.toString()
+  console.log(id)
   const { data } = useBook(id)
 
   if (data) {

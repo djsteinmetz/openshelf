@@ -1,30 +1,33 @@
 import Link from "next/link";
-import Container from "@/components/container";
 import ButtonLink from "@/components/button-link";
 import Cookies from "js-cookie";
 import Router from "next/router";
 import React, { useEffect } from "react";
 import cookie from "cookie";
-import { isLoggedIn } from "helpers/auth.helpers";
+import { isAdminUser, isLoggedIn } from "helpers/auth.helpers";
+import ContainerFluid from "../container-fluid";
 
 export default function Nav() {
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [isAdmin, setIsAdmin] = React.useState(false);
 
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
     console.log("cookies from navigation index", cookies);
-    const token = cookies["bookster.access_token"];
+    const token = cookies["booklical.access_token"];
     console.log("token from nav", token);
     const authorized = isLoggedIn(token);
+    const _isAdmin = isAdminUser(token);
     setLoggedIn(authorized);
+    setIsAdmin(_isAdmin);
   });
 
   return (
-    <Container className="py-4">
-      <nav>
+    <ContainerFluid className="bg-gray-200">
+      <nav className="px-8 py-4">
         <div className="flex justify-between items-center">
           <Link href="/">
-            <a className="font-bold text-3xl">Bookish</a>
+            <a className="font-bold text-3xl">Booklical {isAdmin ? 'Admin' : ''}</a>
           </Link>
           {!loggedIn && (
             <div>
@@ -48,7 +51,7 @@ export default function Nav() {
               <a
                 className="text-gray-600 p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
                 onClick={() => {
-                  Cookies.remove("bookster.access_token", {
+                  Cookies.remove("booklical.access_token", {
                     path: "/",
                   });
                   Router.push("/login");
@@ -60,6 +63,6 @@ export default function Nav() {
           )}
         </div>
       </nav>
-    </Container>
+    </ContainerFluid>
   );
 }

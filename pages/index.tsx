@@ -52,7 +52,7 @@ export default function IndexPage({isLoggedIn}) {
 IndexPage.getInitialProps = (ctx: NextPageContext) => {
   const cookies = parseCookies(ctx)
   console.log({cookies})
-  const token = cookies['bookster.access_token'];
+  const token = cookies['booklical.access_token'];
   console.log({token})
   const authorized = isLoggedIn(token);
   return { isLoggedIn: authorized };
