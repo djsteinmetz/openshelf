@@ -1,45 +1,46 @@
-import { useState } from 'react'
-import Router from 'next/router'
+import { useState } from "react";
+import Router from "next/router";
 import Cookies from "js-cookie";
-import Button from '@/components/button'
-import { TokenResponse } from 'models/token-response.interface'
+import Button from "@/components/button";
+import { TokenResponse } from "models/token-response.interface";
 
 export default function LoginForm() {
-  const [Email, setEmail] = useState('')
-  const [Password, setPassword] = useState('')
-  const [submitting, setSubmitting] = useState(false)
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const setAuthCookie = async (token: string) => {
     Cookies.set("bookster.access_token", token, {
       path: "/",
     });
-  }
+  };
 
   async function submitHandler(e) {
-    setSubmitting(true)
-    e.preventDefault()
+    setSubmitting(true);
+    e.preventDefault();
     try {
-      const res = await fetch('/api/oauth/token', {
-        method: 'POST',
+      const res = await fetch("/api/oauth/token", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           Email,
           Password,
         }),
-      })
-      setSubmitting(false)
-      const json: TokenResponse = await res.json()
-      if (!res.ok) throw Error('Something went wrong')
+      });
+      setSubmitting(false);
+      const json: TokenResponse = await res.json();
+      if (!res.ok) throw Error("Something went wrong");
       if (json && json?.access_token) {
-          console.log('cookie being set')
-        await setAuthCookie(json.access_token);
-        Router.push('/')
+        console.log("cookie being set");
+        await setAuthCookie(json.access_token).then(() => {
+          Router.push("/");
+        });
       }
     } catch (e) {
-        console.log('something went wrong with the login')
-      throw Error(e.message)
+      console.log("something went wrong with the login");
+      throw Error(e.message);
     }
   }
 
@@ -72,8 +73,8 @@ export default function LoginForm() {
         />
       </div>
       <Button disabled={submitting} type="submit">
-        {submitting ? 'Logging In ...' : 'Log In'}
+        {submitting ? "Logging In ..." : "Log In"}
       </Button>
     </form>
-  )
+  );
 }

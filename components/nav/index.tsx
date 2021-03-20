@@ -14,6 +14,7 @@ export default function Nav() {
     const cookies = cookie.parse(document.cookie);
     console.log('cookies from navigation index', cookies)
     const token = cookies["bookster.access_token"];
+    console.log('token from nav', token)
     const authorized = isLoggedIn(token);
     setLoggedIn(authorized);
   });
