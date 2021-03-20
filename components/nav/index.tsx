@@ -12,6 +12,7 @@ export default function Nav() {
 
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
+    console.log('cookies from navigation index', cookies)
     const token = cookies["bookster.access_token"];
     const authorized = isLoggedIn(token);
     setLoggedIn(authorized);
