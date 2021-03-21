@@ -10,7 +10,7 @@ export default function LoginForm() {
   const [submitting, setSubmitting] = useState(false);
 
   const setAuthCookie = async (token: string) => {
-    Cookies.set("booklical.access_token", token, {
+    Cookies.set("bookstr.access_token", token, {
       path: "/",
     });
   };

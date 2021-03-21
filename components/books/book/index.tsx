@@ -12,7 +12,7 @@ function Book({ id,title, author, description, genre, owner }) {
   
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
-    const token = cookies["booklical.access_token"];
+    const token = cookies["bookstr.access_token"];
     const _isAdmin = isAdminUser(token);
     setIsAdmin(_isAdmin);
   });

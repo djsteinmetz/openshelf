@@ -14,7 +14,7 @@ export default function Nav() {
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
     console.log("cookies from navigation index", cookies);
-    const token = cookies["booklical.access_token"];
+    const token = cookies["bookstr.access_token"];
     console.log("token from nav", token);
     const authorized = isLoggedIn(token);
     const _isAdmin = isAdminUser(token);
@@ -27,7 +27,7 @@ export default function Nav() {
       <nav className="px-8 py-4">
         <div className="flex justify-between items-center">
           <Link href="/">
-            <a className="font-bold text-3xl">Booklical {isAdmin ? 'Admin' : ''}</a>
+            <a className="font-bold text-3xl">Bookstr {isAdmin ? 'Admin' : ''}</a>
           </Link>
           {!loggedIn && (
             <div>
@@ -51,7 +51,7 @@ export default function Nav() {
               <a
                 className="text-gray-600 p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
                 onClick={() => {
-                  Cookies.remove("booklical.access_token", {
+                  Cookies.remove("bookstr.access_token", {
                     path: "/",
                   });
                   Router.push("/login");

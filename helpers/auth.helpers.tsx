@@ -4,7 +4,7 @@ import { AuthError } from "models/errors.interface";
 import { IDecodedToken } from "models/decoded-token.interface";
 
 export const isAuthenticated = (fn: NextApiHandler) => async (req: NextApiRequest, res: NextApiResponse) => {
-    let token = req?.cookies?.['booklical.access_token'];
+    let token = req?.cookies?.['bookstr.access_token'];
     if (req?.headers?.authorization) {
         token = req?.headers?.authorization?.split(' ')?.[1];
     }
