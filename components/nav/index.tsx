@@ -16,7 +16,6 @@ import {
   makeStyles,
   Theme,
   Toolbar,
-  Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 
@@ -24,16 +23,12 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      backgroundColor: "white",
     },
     menuButton: {
       marginRight: theme.spacing(2),
     },
     title: {
       flexGrow: 1,
-    },
-    appBar: {
-      backgroundColor: "white",
     },
   })
 );
@@ -56,7 +51,7 @@ export default function Nav() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" color="inherit">
         <Toolbar>
           <IconButton
             edge="start"
@@ -66,7 +61,7 @@ export default function Nav() {
           >
             <MenuIcon />
           </IconButton>
-          <LogoHorizontal classes="hidden md:block" />
+          <LogoHorizontal classes="hidden md:block py-2" width="12em"/>
           <LogoSquare classes="block md:hidden" />
           {!loggedIn && (
             <div>
