@@ -3,7 +3,7 @@ import Container from "@/components/container";
 
 export default function register() {
   return (
-    <Container className="w-full lg:w-1/4">
+    <Container>
       <RegisterForm />
     </Container>
   );

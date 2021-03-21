@@ -1,13 +1,45 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Router from "next/router";
 import Cookies from "js-cookie";
-import Button from "@/components/button";
 import { TokenResponse } from "models/token-response.interface";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import {
+  TextField,
+  Button,
+  Theme,
+  makeStyles,
+  createStyles,
+  Typography,
+  Avatar,
+  Container,
+  CssBaseline,
+} from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 export default function LoginForm() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const classes = useStyles();
 
   const setAuthCookie = async (token: string) => {
     Cookies.set("bookstr.access_token", token, {
@@ -45,36 +77,52 @@ export default function LoginForm() {
   }
 
   return (
-    <form onSubmit={submitHandler}>
-      <div className="my-4">
-        <label htmlFor="Email">
-          <h3 className="font-bold">Email</h3>
-        </label>
-        <input
-          id="Email"
-          className="shadow border rounded py-2 px-3 w-full"
-          type="text"
-          name="Email"
-          value={Email}
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+    <div className={classes.paper}>
+      <Avatar className={classes.avatar}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign in
+      </Typography>
+      <form onSubmit={submitHandler}>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email"
+          name="email"
+          autoComplete="email"
+          autoFocus
           onChange={(e) => setEmail(e.target.value)}
         />
-      </div>
-      <div className="my-4">
-        <label htmlFor="Password">
-          <h3 className="font-bold">Password</h3>
-        </label>
-        <input
-          id="Password"
-          className="shadow border rounded py-2 px-3 w-full"
-          type="password"
-          name="Password"
-          value={Password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </div>
-      <Button disabled={submitting} type="submit">
-        {submitting ? "Logging In ..." : "Log In"}
-      </Button>
-    </form>
+        <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+      <Button
+            disabled={submitting} 
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            {submitting ? "Logging In ..." : "Log In"}
+          </Button>
+      </form>
+    </div>
+    </Container>
   );
 }

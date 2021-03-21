@@ -28,13 +28,13 @@ function Book({ id,title, author, description, genre, owner }) {
   return (
     <div>
       <div className="flex items-center">
-        <Link href={`/books/${id}`}>
+        <Link href={`/bookshelf/${id}`}>
           <a className="font-bold py-2">{title} by {author}</a>
         </Link>
         {isAdmin && (
           <div className="flex ml-4">
           <ButtonLink
-            href={`/books/edit/${id}?title=${title}&author=${author}&description=${description}&genre=${genre}`}
+            href={`/bookshelf/edit/${id}?title=${title}&author=${author}&description=${description}&genre=${genre}`}
             className="h-5 py-0 mx-1"
           >
             Edit

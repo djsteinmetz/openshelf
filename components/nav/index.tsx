@@ -6,10 +6,34 @@ import React, { useEffect } from "react";
 import cookie from "cookie";
 import { isAdminUser, isLoggedIn } from "helpers/auth.helpers";
 import ContainerFluid from "../container-fluid";
+import LogoHorizontal from "../logo-horizontal";
+import LogoSquare from "../logo-square";
+import {
+  AppBar,
+  Button,
+  createStyles,
+  IconButton,
+  makeStyles,
+  Theme,
+  Toolbar,
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+    menuButton: {
+      marginRight: theme.spacing(2),
+    },
+  })
+);
 
 export default function Nav() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isAdmin, setIsAdmin] = React.useState(false);
+  const classes = useStyles();
 
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
@@ -23,46 +47,92 @@ export default function Nav() {
   });
 
   return (
-    <ContainerFluid className="bg-gray-200">
-      <nav className="px-8 py-4">
-        <div className="flex justify-between items-center">
-          <Link href="/">
-            <a className="font-bold text-3xl">Bookstr {isAdmin ? 'Admin' : ''}</a>
-          </Link>
+    <div className={classes.root}>
+      <AppBar position="static" color="inherit">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu"
+          >
+            <MenuIcon />
+          </IconButton>
+          <div className="flex-grow">
+            <LogoHorizontal classes="hidden md:block py-2" width="12em"/>
+            <LogoSquare classes="block md:hidden" />
+          </div>
           {!loggedIn && (
             <div>
-              <a
-                className="bg-black text-white p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
-                onClick={() => Router.push("/login")}
-              >
-                Login
-              </a>
-              <a
-                className="bg-black text-white p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
-                onClick={() => Router.push("/register")}
-              >
-                Register
-              </a>
+              <Link href="/login">
+                <Button color="inherit">Login</Button>
+              </Link>
+              <Link href="/register">
+                <Button color="inherit">Register</Button>
+              </Link>
             </div>
           )}
           {loggedIn && (
             <div>
-              <ButtonLink href="/new">Add Book</ButtonLink>
-              <a
-                className="text-gray-600 p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
+              <Button
                 onClick={() => {
                   Cookies.remove("bookstr.access_token", {
                     path: "/",
                   });
                   Router.push("/login");
                 }}
+                color="inherit"
               >
                 Logout
-              </a>
+              </Button>
+              <Link href="/new">
+                <Button color="inherit">Add Book</Button>
+              </Link>
             </div>
           )}
-        </div>
-      </nav>
-    </ContainerFluid>
+        </Toolbar>
+      </AppBar>
+    </div>
+    // <ContainerFluid className="bg-gray-200">
+    //   <nav className="px-8 py-4">
+    //     <div className="flex justify-between items-center">
+    //       <Link href="/">
+    //         <a className="font-bold text-3xl"><LogoHorizontal classes="hidden md:block"/><LogoSquare classes="block md:hidden"/> {isAdmin ? '| Admin' : ''}</a>
+    //       </Link>
+    //       {!loggedIn && (
+    //         <div>
+    //           <a
+    //             className="bg-black text-white p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
+    //             onClick={() => Router.push("/login")}
+    //           >
+    //             Login
+    //           </a>
+    //           <a
+    //             className="bg-black text-white p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
+    //             onClick={() => Router.push("/register")}
+    //           >
+    //             Register
+    //           </a>
+    //         </div>
+    //       )}
+    //       {loggedIn && (
+    //         <div>
+    //           <ButtonLink href="/new">Add Book</ButtonLink>
+    //           <a
+    //             className="text-gray-600 p-2 rounded uppercase text-sm font-bold ml-2 cursor-pointer"
+    //             onClick={() => {
+    //               Cookies.remove("bookstr.access_token", {
+    //                 path: "/",
+    //               });
+    //               Router.push("/login");
+    //             }}
+    //           >
+    //             Logout
+    //           </a>
+    //         </div>
+    //       )}
+    //     </div>
+    //   </nav>
+    // </ContainerFluid>
   );
 }
