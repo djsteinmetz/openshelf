@@ -27,9 +27,6 @@ const useStyles = makeStyles((theme: Theme) =>
     menuButton: {
       marginRight: theme.spacing(2),
     },
-    title: {
-      flexGrow: 1,
-    },
   })
 );
 
@@ -61,8 +58,10 @@ export default function Nav() {
           >
             <MenuIcon />
           </IconButton>
-          <LogoHorizontal classes="hidden md:block py-2" width="12em"/>
-          <LogoSquare classes="block md:hidden" />
+          <div className="flex-grow">
+            <LogoHorizontal classes="hidden md:block py-2" width="12em"/>
+            <LogoSquare classes="block md:hidden" />
+          </div>
           {!loggedIn && (
             <div>
               <Link href="/login">

@@ -3,8 +3,8 @@ export default function LogoSquare({ classes }) {
     <svg className={classes}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 308.69 309.57"
-      width="1em"
-      height="1em"
+      width="2em"
+      height="4em"
     >
       <g data-name="Layer 2">
         <g data-name="Layer 1">
