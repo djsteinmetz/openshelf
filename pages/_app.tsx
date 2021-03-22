@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }) {
         <CssBaseline />
       <Nav />
       <Component {...pageProps} />
-      <Footer />
+      {/* <Footer /> */}
       </ThemeProvider>
     </>
   )

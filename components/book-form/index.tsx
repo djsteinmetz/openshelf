@@ -78,7 +78,7 @@ export default function BookForm() {
             console.log(genre)
           }}
         >
-          <option selected value={null}>Choose a genre</option>
+          <option value={null}>Choose a genre</option>
           <option value="Fiction">Fiction</option>
           <option value="Non-Fiction">Non-Fiction</option>
           <option value="Mystery">Mystery</option>
