@@ -60,7 +60,7 @@ export default function RegisterForm() {
       setSubmitting(false);
       const json = await res.json();
       if (!res.ok) throw Error(json.message);
-      Router.push("/");
+      Router.push("/login");
     } catch (e) {
       throw Error(e.message);
     }
