@@ -10,17 +10,18 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useState } from "react";
-import { red } from "@material-ui/core/colors";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
+import moment from "moment";
+import Link from "next/link";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       maxWidth: 345,
+      cursor: "pointer",
     },
     media: {
       height: "10rem",
@@ -54,67 +55,69 @@ export default function BookCard({ book }) {
     setExpanded(!expanded);
   };
   const initial = book?.FullName?.charAt(0);
-  console.log(initial);
-  console.log(book.ImageURL);
+  const dateAdded = moment(book.created_at, "YYYYMMDD").fromNow();
+
   return (
     book && (
       <Grid item xs={12} md={4}>
-        <Card className={classes.root}>
-          <CardHeader
-            avatar={
-              <Avatar aria-label="recipe" className={classes.avatar}>
-                {initial}
-              </Avatar>
-            }
-            action={
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title={book.FullName}
-            subheader={book.Genre}
-          />
-          <CardMedia
-            className={classes.media}
-            image={book.ImageURL}
-            title="Book Image"
-          />
-          <CardContent>
-            <Typography variant="h5" color="textSecondary" component="p">
-              {book.Title}
-            </Typography>
-            <Typography
-              className={classes.author}
-              variant="body1"
-              color="textSecondary"
-              component="p"
-            >
-              {book.Author}
-            </Typography>
-          </CardContent>
-          <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-              <FavoriteIcon />
-            </IconButton>
-            <IconButton
-              className={clsx(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="show more"
-            >
-              <ExpandMoreIcon />
-            </IconButton>
-          </CardActions>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
+          <Card className={classes.root}>
+            <CardHeader
+              avatar={
+                <Avatar aria-label="recipe" className={classes.avatar}>
+                  {initial}
+                </Avatar>
+              }
+              action={
+                <IconButton aria-label="settings">
+                  <MoreVertIcon />
+                </IconButton>
+              }
+              title={book.FullName}
+              subheader={`Added ${dateAdded}`}
+            />
+            <CardMedia
+              className={classes.media}
+              image={book.ImageURL}
+              title="Book Image"
+            />
             <CardContent>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {book.Description}
+              <Typography variant="h5" color="textSecondary" component="p">
+                {book.Title}
+              </Typography>
+              <Typography
+                className={classes.author}
+                variant="body1"
+                color="textSecondary"
+                component="p"
+              >
+                {book.Author}
               </Typography>
             </CardContent>
-          </Collapse>
-        </Card>
+            <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography variant="body2" color="textSecondary" component="p">
+                  {book.Description}
+                </Typography>
+              </CardContent>
+            </Collapse>
+          </Card>
+        </Link>
       </Grid>
     )
   );

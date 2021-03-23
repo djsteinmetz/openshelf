@@ -6,7 +6,7 @@ export default function LogoHorizontal({ classes, width }) {
         className={classes}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 1546.6 309.57"
-        height="auto"
+        height="100%"
         width={width}
       >
         <g data-name="Layer 2">
