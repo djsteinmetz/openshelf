@@ -73,9 +73,7 @@ export default function BookForm() {
           name="genre"
           onChange={(e) => {
             e.preventDefault()
-            console.log(e.target.value)
             setGenre(e.target.value);
-            console.log(genre)
           }}
         >
           <option value={null}>Choose a genre</option>
