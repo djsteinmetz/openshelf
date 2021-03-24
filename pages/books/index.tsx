@@ -5,9 +5,11 @@ import Books from '@/components/books'
 
 import { useBooks } from '@/lib/swr-hooks'
 import React from 'react'
+import { useSearch } from '@/lib/search'
 
 export default function Bookshelf() {
-  const { books, isLoading } = useBooks()
+  const { search } = useSearch()
+  const { books, isLoading } = useBooks(search)
 
   if (isLoading) {
     return (

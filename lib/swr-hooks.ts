@@ -4,7 +4,17 @@ function fetcher(url: string) {
   return window.fetch(url).then((res) => res.json())
 }
 
-export function useBooks() {
+export function useBooks(searchTerm?: string) {
+  if (searchTerm) {
+    const urlEncodedSearchTerm = searchTerm.split(' ').join('%20')
+    const { data, error } = useSWR(`/api/get-books?search=${urlEncodedSearchTerm}`, fetcher)
+  
+    return {
+      books: data,
+      isLoading: !error && !data,
+      isError: error,
+    }
+  }
   const { data, error } = useSWR(`/api/get-books`, fetcher)
 
   return {

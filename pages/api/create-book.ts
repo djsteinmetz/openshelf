@@ -7,7 +7,6 @@ const handler: NextApiHandler = async (req, res) => {
   const { title, author, description, genre } = req.body
   try {
     const token = verify(req.headers.cookie.split('=')[1], process.env.NEXT_PUBLIC_API_SECRET);
-    console.log('new one', token)
     const result = await query(
       `
             SELECT ID, Active, FullName, Email, Password, Verified, Roles
@@ -17,7 +16,6 @@ const handler: NextApiHandler = async (req, res) => {
       token.email
     );
     const user = result[0] as IUser;
-    console.log(user)
     if (!title || !author || !description || !genre) {
       return res
         .status(400)

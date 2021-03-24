@@ -18,7 +18,6 @@ export default async function getAccessToken(
       req.body.Email
     );
     const user = result[0] as IUser;
-    console.log(user);
     if (user === undefined) {
       return res.status(401).json({
         error: "invalid_grant",

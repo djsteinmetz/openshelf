@@ -68,11 +68,6 @@ export default function BookCard({ book }) {
                   {initial}
                 </Avatar>
               }
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
               title={book.FullName}
               subheader={`Added ${dateAdded}`}
             />
@@ -93,29 +88,10 @@ export default function BookCard({ book }) {
               >
                 {book.Author}
               </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {book.Description}
+              </Typography>
             </CardContent>
-            <CardActions disableSpacing>
-              <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-              </IconButton>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {book.Description}
-                </Typography>
-              </CardContent>
-            </Collapse>
           </Card>
         </Link>
       </Grid>
