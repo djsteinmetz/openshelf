@@ -7,7 +7,7 @@ function fetcher(url: string) {
 export function useBooks(searchTerm?: string) {
   if (searchTerm) {
     const urlEncodedSearchTerm = searchTerm.split(' ').join('%20')
-    const { data, error } = useSWR(`/api/get-books?search=${urlEncodedSearchTerm}`, fetcher)
+    const { data, error } = useSWR(`/api/books?search=${urlEncodedSearchTerm}`, fetcher)
   
     return {
       books: data,
@@ -15,7 +15,27 @@ export function useBooks(searchTerm?: string) {
       isError: error,
     }
   }
-  const { data, error } = useSWR(`/api/get-books`, fetcher)
+  const { data, error } = useSWR(`/api/books`, fetcher)
+
+  return {
+    books: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
+export function useMyBooks(searchTerm?: string) {
+  if (searchTerm) {
+    const urlEncodedSearchTerm = searchTerm.split(' ').join('%20')
+    const { data, error } = useSWR(`/api/me/books?search=${urlEncodedSearchTerm}`, fetcher)
+  
+    return {
+      books: data,
+      isLoading: !error && !data,
+      isError: error,
+    }
+  }
+  const { data, error } = useSWR(`/api/me/books`, fetcher)
 
   return {
     books: data,
@@ -25,5 +45,5 @@ export function useBooks(searchTerm?: string) {
 }
 
 export function useBook(id: string) {
-  return useSWR(`/api/get-book?id=${id}`, fetcher)
+  return useSWR(`/api/books/${id}`, fetcher)
 }

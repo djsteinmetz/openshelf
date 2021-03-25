@@ -5,17 +5,15 @@ import CardContent from "@material-ui/core/CardContent";
 import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import { useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Link from "next/link";
-import VerifiedIcon from "@material-ui/icons/VerifiedUser";
+import VerifiedIcon from "@material-ui/icons/CheckCircle";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       maxWidth: "100%",
-      cursor: "pointer",
       marginBottom: theme.spacing(2),
     },
     media: {
@@ -50,7 +48,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     verified: {
       color: theme.palette.primary.main,
+      fontSize: '1rem'
     },
+    readMore: {
+      cursor: 'pointer',
+      marginTop: theme.spacing(1),
+    }
   })
 );
 
@@ -61,7 +64,6 @@ export default function BookCard({ book }) {
 
   return (
     book && (
-      <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
         <Card className={classes.root}>
           <CardHeader
             avatar={
@@ -111,10 +113,10 @@ export default function BookCard({ book }) {
               <Typography variant="body2" color="textSecondary" component="p">
                 {book.Description}
               </Typography>
+              <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}><Typography className={classes.readMore} color="textSecondary" variant="body2">Read More &gt;</Typography></Link>
             </CardContent>
           </div>
         </Card>
-      </Link>
     )
   );
 }
