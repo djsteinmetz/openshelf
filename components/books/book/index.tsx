@@ -22,7 +22,7 @@ function Book({ id,title, author, description, genre, owner }) {
     let res = await fetch(`/api/delete-book?id=${id}`, { method: 'DELETE' })
     let json = await res.json()
     if (!res.ok) throw Error(json.message)
-    mutate('/api/get-books')
+    mutate('/api/books')
     setDeleting(false)
   }
   return (

@@ -1,6 +1,6 @@
 import { booleanConversion } from 'helpers/boolean.helpers'
 import { NextApiHandler } from 'next'
-import { query } from '../../lib/db'
+import { query } from '../../../lib/db'
 
 const handler: NextApiHandler = async (_, res) => {
   if (_?.query?.search && _?.query?.search !== '') {

@@ -119,6 +119,14 @@ export default function Nav() {
       <MenuItem
         onClick={() => {
           handleMenuClose();
+          Router.push("/books/my-books");
+        }}
+      >
+        My Books
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
           Router.push("/new");
         }}
       >
