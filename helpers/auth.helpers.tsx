@@ -55,6 +55,7 @@ export const isAdminUser = (token: string): boolean => {
     let isAdmin = false;
     verify(token, process.env.NEXT_PUBLIC_API_SECRET, async function(err: Error, decoded: IDecodedToken) {
         if (!err && decoded && decoded?.roles?.includes('ADMIN')) {
+            console.log(decoded?.roles?.includes('ADMIN'))
             isAdmin = true;
         }
     });

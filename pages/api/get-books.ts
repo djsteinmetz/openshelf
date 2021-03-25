@@ -1,3 +1,4 @@
+import { booleanConversion } from 'helpers/boolean.helpers'
 import { NextApiHandler } from 'next'
 import { query } from '../../lib/db'
 
@@ -7,8 +8,9 @@ const handler: NextApiHandler = async (_, res) => {
     try {
       const results = await query(`
       SELECT
-        Users.FullName, 
-        Users.Email, 
+        Users.FullName AS OwnerFullName, 
+        Users.Email AS OwnerEmail, 
+        CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
         Books.interopID, 
         Books.Title, 
         Books.Author, 
@@ -31,8 +33,17 @@ const handler: NextApiHandler = async (_, res) => {
         Books.Author
       LIKE
         '%${search}%'
+      OR
+        Books.OwnerID
+      LIKE
+        '%${search}%'
     `)
-  
+      if (results) {
+        (results as any).forEach(r => {
+            r.OwnerVerified = booleanConversion(r.OwnerVerified)
+        })
+      }
+
       return res.json(results)
     } catch (e) {
       res.status(500).json({ message: e.message })
@@ -41,8 +52,9 @@ const handler: NextApiHandler = async (_, res) => {
     try {
       const results = await query(`
       SELECT
-        Users.FullName, 
-        Users.Email, 
+        Users.FullName AS OwnerFullName, 
+        Users.Email AS OwnerEmail, 
+        CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
         Books.interopID, 
         Books.Title, 
         Books.Author, 
@@ -57,8 +69,15 @@ const handler: NextApiHandler = async (_, res) => {
         Books
       ON 
         Users.ID = Books.OwnerID
+      ORDER BY 
+        Books.Title 
+      ASC
     `)
-  
+      if (results) {
+        (results as any).forEach(r => {
+            r.OwnerVerified = booleanConversion(r.OwnerVerified)
+        })
+      }
       return res.json(results)
     } catch (e) {
       res.status(500).json({ message: e.message })

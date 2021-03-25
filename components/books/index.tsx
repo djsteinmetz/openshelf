@@ -6,8 +6,6 @@ import BookCard from './book-card';
 
 export default function Books({books}) {
   return (
-    <Grid container className="flex-grow" spacing={2}>
-      {books?.map((b: IBook, i: number) => <BookCard key={i} book={b} />)}
-    </Grid>
+      books?.map((b: IBook, i: number) => <BookCard key={i} book={b} />)
   );
 }

@@ -30,10 +30,9 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     branding: {
-      fontWeight: 'bold'
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
+      fontWeight: 'bold',
+      cursor: 'pointer',
+      marginRight: theme.spacing(2)
     },
     search: {
       position: 'relative',
@@ -42,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
       '&:hover': {
         backgroundColor: fade(theme.palette.common.white, 0.25),
       },
-      marginRight: theme.spacing(2),
+      // marginRight: theme.spacing(2),
       marginLeft: 0,
       width: '100%',
       [theme.breakpoints.up('sm')]: {
@@ -143,7 +142,12 @@ export default function Nav() {
     <div className={classes.root}>
       <AppBar position="static" color="secondary">
         <Toolbar>
-          <Typography className={classes.branding} variant="h5">BOOKSTR</Typography>
+          <div className="hidden md:block">
+            <Link href="/"><Typography className={classes.branding} variant="h5">BOOKSTR</Typography></Link>
+          </div>
+          <div className="block md:hidden">
+            <Link href="/"><Typography className={classes.branding} variant="h5">B</Typography></Link>
+          </div>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />

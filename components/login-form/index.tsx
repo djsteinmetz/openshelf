@@ -6,14 +6,13 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import {
   TextField,
   Button,
-  Theme,
   makeStyles,
-  createStyles,
   Typography,
   Avatar,
   Container,
   CssBaseline,
 } from "@material-ui/core";
+import BookstrSnackbar from "../snackbar";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,12 +38,26 @@ export default function LoginForm() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [errMessage, setErrMessage] = React.useState('');
+  
   const classes = useStyles();
 
   const setAuthCookie = async (token: string) => {
     Cookies.set("bookstr.access_token", token, {
       path: "/",
     });
+  };
+
+  const handleClose = (
+    event: React.SyntheticEvent | React.MouseEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
   };
 
   async function submitHandler(e) {
@@ -63,16 +76,19 @@ export default function LoginForm() {
       });
       setSubmitting(false);
       const json: TokenResponse = await res.json();
-      if (!res.ok) throw Error("Something went wrong");
+      if (res.status === 401) {
+        setErrMessage('Incorrect Username or Password')
+        setOpen(true)
+      }
       if (json && json?.access_token) {
-        console.log("cookie being set");
         await setAuthCookie(json.access_token).then(() => {
           Router.push("/");
         });
       }
     } catch (e) {
-      console.log("something went wrong with the login");
-      throw Error(e.message);
+      console.log(e)
+      setErrMessage('Oops! Something went wrong.')
+      setOpen(true)
     }
   }
 
@@ -123,6 +139,7 @@ export default function LoginForm() {
           </Button>
       </form>
     </div>
+    <BookstrSnackbar message={errMessage} open={open} handleClose={handleClose} />
     </Container>
   );
 }

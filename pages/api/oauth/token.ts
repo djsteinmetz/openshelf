@@ -64,7 +64,17 @@ export default async function getAccessToken(
       } else {
         return res
           .status(401)
-          .json({ status: res.status, message: "Unauthorized" });
+          .json({
+            error: "invalid_grant",
+            error_description: "Invalid Credentials",
+            Errors: [
+              {
+                ErrorCode: "Auth.InvalidCredentials",
+                Message: "Username or Password are incorrect.",
+                Data: {},
+              },
+            ],
+          })
       }
     });
   } else {
