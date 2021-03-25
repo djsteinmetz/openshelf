@@ -1,39 +1,3 @@
-DROP TABLE Users;
-DROP TABLE Books;
-
-CREATE TABLE Users (
-    interopID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    ID TEXT,
-    FullName TEXT,
-    Email TEXT,
-    Password TEXT,
-    Active BOOLEAN,
-    Verified BOOLEAN,
-    Roles TEXT,
-    Favorites TEXT,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE Books (
-    interopID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    ID TEXT,
-    Title TEXT,
-    Author TEXT,
-    Description TEXT,
-    Genre TEXT,
-    ImageURL TEXT,
-    OwnerID TEXT REFERENCES Users(ID),
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-INSERT INTO Users (ID, FullName, Email, Password, Active, Verified, Roles) VALUES ('janereader', 'Jane Pierson', 'jpierson@bookstr.io', 'fails345', true, false, 'READER');
-INSERT INTO Users (ID, FullName, Email, Password, Active, Verified, Roles) VALUES ('milesnelson', 'Miles Nelson', 'mnelson@bookstr.io', 'fails345', true, false, 'READER');
-INSERT INTO Users (ID, FullName, Email, Password, Active, Verified, Roles) VALUES ('reesewitherspoon', 'Reese Witherspoon', 'rwitherspoon@bookstr.io', 'fails345', true, true, 'READER');
-INSERT INTO Users (ID, FullName, Email, Password, Active, Verified, Roles) VALUES ('chelseamulvaney', 'Chelsea Mulvaney', 'cmulvaney@bookstr.io', 'fails345', true, false, 'READER');
-INSERT INTO Users (ID, FullName, Email, Password, Active, Verified, Roles) VALUES ('travisolson', 'Travis Olson', 'tolson@bookstr.io', 'fails345', true, false, 'READER');
-
 INSERT INTO Books (Title, Author, Description, Genre, ImageURL, OwnerID) values ("Intelligence Of My Journey", "Chen Horton", "Fugiat sit occaecat laboris officia nulla. Quis cillum ad exercitation sunt et. Tempor ut irure dolore amet consequat ex. Adipisicing in excepteur duis nisi qui aliquip occaecat consequat enim deserunt commodo et. Dolor consequat aute ad ullamco culpa. Lorem id tempor consectetur eu aliquip.", "Mystery", "http://placehold.it/160x250", "travisolson");
 INSERT INTO Books (Title, Author, Description, Genre, ImageURL, OwnerID) values ("Jealous Of The Teacher", "Tamara Bradford", "Esse qui esse ullamco sint esse commodo do. Dolore dolor in ipsum aliquip non reprehenderit mollit aliqua adipisicing cillum. Dolor ad sit et amet amet cillum. Irure mollit anim dolor exercitation excepteur magna dolore ut proident commodo adipisicing sit.", "Non-Fiction", "http://placehold.it/160x250", "travisolson");
 INSERT INTO Books (Title, Author, Description, Genre, ImageURL, OwnerID) values ("Journey to the Moon", "Crane Sloan", "Tempor in do consequat adipisicing cillum laborum ipsum aute ut fugiat qui excepteur. Laboris qui commodo eiusmod ad mollit ut sit cupidatat ex ut labore. Est exercitation nisi ut ex. Dolore reprehenderit dolore sint consequat ex excepteur aliqua. Sint voluptate id amet non sunt veniam deserunt ex occaecat pariatur excepteur mollit. Aliqua deserunt reprehenderit Lorem mollit eu ea id sit tempor nisi. Et ex anim amet exercitation fugiat ea mollit.", "Non-Fiction", "http://placehold.it/160x250", "chelseamulvaney");

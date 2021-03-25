@@ -16,6 +16,11 @@ const handler: NextApiHandler = async (req, res) => {
       id
     )
 
+    // Not Found Exception
+    if (res.statusCode === 200 && !results[0]) {
+      return res.status(404).json({"Object Not Found": `${id}`})
+    }
+
     return res.json(results[0])
   } catch (e) {
     res.status(500).json({ message: e.message })

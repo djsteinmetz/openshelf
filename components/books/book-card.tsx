@@ -1,32 +1,36 @@
-import clsx from "clsx";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
-import CardActions from "@material-ui/core/CardActions";
-import Collapse from "@material-ui/core/Collapse";
+import Badge from "@material-ui/core/Badge";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Link from "next/link";
+import VerifiedIcon from "@material-ui/icons/Verifieduser";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
-      maxWidth: 345,
+      maxWidth: "100%",
       cursor: "pointer",
+      marginBottom: theme.spacing(2),
     },
     media: {
       height: "10rem",
-      width: "auto",
+      width: "8rem",
       backgroundSize: "contain",
+      marginBottom: theme.spacing(2),
+    },
+    cardContent: {
+      padding: '0 16px 16px 16px'
+    },
+    cardBody: {
+      display: "flex",
+      alignItems: "start",
     },
     expand: {
       transform: "rotate(0deg)",
@@ -45,6 +49,9 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: "bold",
       marginBottom: "1rem",
     },
+    verified: {
+      color: theme.palette.primary.main,
+    },
   })
 );
 
@@ -54,29 +61,47 @@ export default function BookCard({ book }) {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-  const initial = book?.FullName?.charAt(0);
+  const initial = book?.OwnerFullName?.charAt(0);
   const dateAdded = moment(book.created_at, "YYYYMMDD").fromNow();
 
   return (
     book && (
-      <Grid item xs={12} md={4}>
-        <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
-          <Card className={classes.root}>
-            <CardHeader
-              avatar={
-                <Avatar aria-label="recipe" className={classes.avatar}>
+      <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
+        <Card className={classes.root}>
+          <CardHeader
+            avatar={
+              <Badge
+                overlap="circle"
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                badgeContent={
+                  book?.OwnerVerified && (
+                    <VerifiedIcon
+                      fontSize="small"
+                      className={classes.verified}
+                    />
+                  )
+                }
+              >
+                <Avatar aria-label="book owner" className={classes.avatar}>
                   {initial}
                 </Avatar>
-              }
-              title={book.FullName}
-              subheader={`Added ${dateAdded}`}
-            />
-            <CardMedia
-              className={classes.media}
-              image={book.ImageURL}
-              title="Book Image"
-            />
-            <CardContent>
+              </Badge>
+            }
+            title={book.OwnerFullName}
+            subheader={`Added ${dateAdded}`}
+          />
+          <div className={classes.cardBody}>
+            <div>
+              <CardMedia
+                className={classes.media}
+                image={book.ImageURL}
+                title="Book Image"
+              />
+            </div>
+            <CardContent className={classes.cardContent}>
               <Typography variant="h5" color="textSecondary" component="p">
                 {book.Title}
               </Typography>
@@ -92,9 +117,9 @@ export default function BookCard({ book }) {
                 {book.Description}
               </Typography>
             </CardContent>
-          </Card>
-        </Link>
-      </Grid>
+          </div>
+        </Card>
+      </Link>
     )
   );
 }

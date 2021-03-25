@@ -3,7 +3,7 @@ import Nav from '@/components/nav'
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { ProvideSearch } from '../lib/search'
-import theme from '../theme';
+import theme from '../styles/theme';
 import Head from 'next/head'
 
 function MyApp({ Component, pageProps, }) {

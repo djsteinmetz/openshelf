@@ -1,0 +1,1 @@
+export const booleanConversion = (bool: string) => bool === 'true' ? true : false
