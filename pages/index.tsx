@@ -13,15 +13,15 @@ export default function IndexPage() {
   if (isLoading) {
     return (
       <div>
-        <Container>
+        <Container className="mt-8">
           <Skeleton width={180} height={24} />
-          <Skeleton height={48} />
+          <Skeleton height={125} />
           <div className="my-4" />
           <Skeleton width={180} height={24} />
-          <Skeleton height={48} />
+          <Skeleton height={125} />
           <div className="my-4" />
           <Skeleton width={180} height={24} />
-          <Skeleton height={48} />
+          <Skeleton height={125} />
         </Container>
       </div>
     )

@@ -1,5 +1,4 @@
 import Card from "@material-ui/core/Card";
-import Grid from "@material-ui/core/Grid";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
@@ -10,7 +9,7 @@ import { useState } from "react";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Link from "next/link";
-import VerifiedIcon from "@material-ui/icons/Verifieduser";
+import VerifiedIcon from "@material-ui/icons/VerifiedUser";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,10 +56,6 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function BookCard({ book }) {
   const classes = useStyles();
-  const [expanded, setExpanded] = useState(false);
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
   const initial = book?.OwnerFullName?.charAt(0);
   const dateAdded = moment(book.created_at, "YYYYMMDD").fromNow();
 
