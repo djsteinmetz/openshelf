@@ -4,10 +4,16 @@ import Router from "next/router";
 import React, { useEffect } from "react";
 import cookie from "cookie";
 import { isAdminUser, isLoggedIn } from "helpers/auth.helpers";
-import LogoHorizontal from "../logo-horizontal";
-import LogoSquare from "../logo-square";
+import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import SearchIcon from '@material-ui/icons/Search'
+import SearchIcon from "@material-ui/icons/Search";
+import LoginIcon from "@material-ui/icons/LockOpen";
+import RegisterIcon from "@material-ui/icons/PersonAdd";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
+import HomeIcon from "@material-ui/icons/Home";
+import BookIcon from "@material-ui/icons/LibraryBooks";
+import MyBooksIcon from "@material-ui/icons/Book";
+
 import {
   AppBar,
   Button,
@@ -20,7 +26,12 @@ import {
   Theme,
   Toolbar,
   fade,
-  Typography
+  Typography,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from "@material-ui/core";
 import { useSearch } from "@/lib/search";
 
@@ -30,50 +41,56 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1,
     },
     branding: {
-      fontWeight: 'bold',
-      cursor: 'pointer',
-      marginRight: theme.spacing(2)
+      fontWeight: "bold",
+      cursor: "pointer",
+      marginRight: theme.spacing(2),
+    },
+    menuButton: {
+      marginLeft: theme.spacing(2),
     },
     search: {
-      position: 'relative',
+      position: "relative",
       borderRadius: theme.shape.borderRadius,
       backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
+      "&:hover": {
         backgroundColor: fade(theme.palette.common.white, 0.25),
       },
       // marginRight: theme.spacing(2),
       marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
+      width: "100%",
+      [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(3),
-        width: 'auto',
+        width: "auto",
       },
     },
     searchIcon: {
       padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      cursor: 'pointer',
+      height: "100%",
+      position: "absolute",
+      pointerEvents: "none",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      cursor: "pointer",
     },
     inputRoot: {
-      color: 'inherit',
+      color: "inherit",
     },
     inputInput: {
       padding: theme.spacing(1, 1, 1, 0),
       // vertical padding + font size from searchIcon
       paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '20ch',
-        '&:focus': {
-          width: '35ch',
+      transition: theme.transitions.create("width"),
+      width: "100%",
+      [theme.breakpoints.up("sm")]: {
+        width: "20ch",
+        "&:focus": {
+          width: "35ch",
         },
       },
+    },
+    list: {
+      width: "auto",
     },
   })
 );
@@ -83,9 +100,14 @@ export default function Nav() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [
+    mobileAnchorEl,
+    setMobileAnchorEl,
+  ] = React.useState<null | HTMLElement>(null);
   const classes = useStyles();
   const menuId = "primary-search-account-menu";
   const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileAnchorEl);
 
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
@@ -96,7 +118,7 @@ export default function Nav() {
     setIsAdmin(_isAdmin);
   });
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -151,10 +173,11 @@ export default function Nav() {
       <AppBar position="static" color="secondary">
         <Toolbar>
           <div className="hidden md:block">
-            <Link href="/"><Typography className={classes.branding} variant="h5">BOOKSTR</Typography></Link>
-          </div>
-          <div className="block md:hidden">
-            <Link href="/"><Typography className={classes.branding} variant="h5">B</Typography></Link>
+            <Link href="/">
+              <Typography className={classes.branding} variant="h5">
+                BOOKSTR
+              </Typography>
+            </Link>
           </div>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
@@ -166,13 +189,26 @@ export default function Nav() {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ 'aria-label': 'search' }}
-              onChange={(e) => { onSearch(e) }}
+              inputProps={{ "aria-label": "search" }}
+              onChange={(e) => {
+                onSearch(e);
+              }}
             />
           </div>
           <div className="flex-grow"></div>
+          <div className="block md:hidden">
+            <IconButton
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="open drawer"
+              onClick={(e) => setMobileAnchorEl(e.currentTarget)}
+            >
+              <MenuIcon />
+            </IconButton>
+          </div>
           {!loggedIn && (
-            <div>
+            <div className="hidden md:block">
               <Link href="/login">
                 <Button color="inherit">Login</Button>
               </Link>
@@ -182,8 +218,9 @@ export default function Nav() {
             </div>
           )}
           {loggedIn && (
-            <IconButton
-              onClick={handleProfileMenuOpen}
+            <div className="hidden md:block">
+              <IconButton
+              onClick={handleMenuOpen}
               aria-label="account of current user"
               aria-controls="primary-search-account-menu"
               aria-haspopup="true"
@@ -191,10 +228,103 @@ export default function Nav() {
             >
               <AccountCircle />
             </IconButton>
+            </div>
           )}
         </Toolbar>
       </AppBar>
       {renderMenu}
+      <Drawer
+        className={classes.list}
+        anchor="right"
+        open={isMobileMenuOpen}
+        onClose={() => setMobileAnchorEl(null)}
+      >
+        <List>
+          <ListItem
+            button
+            onClick={() => {
+              setMobileAnchorEl(null);
+              Router.push("/");
+            }}
+          >
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+          </ListItem>
+          {loggedIn && (
+            <div>
+              <ListItem
+                button
+                onClick={() => {
+                  setMobileAnchorEl(null);
+                  Router.push("/books");
+                }}
+              >
+                <ListItemIcon>
+                  <BookIcon />
+                </ListItemIcon>
+                <ListItemText primary="Browse Books" />
+              </ListItem>
+              <ListItem
+                button
+                onClick={() => {
+                  setMobileAnchorEl(null);
+                  Router.push("/books/my-books");
+                }}
+              >
+                <ListItemIcon>
+                  <MyBooksIcon />
+                </ListItemIcon>
+                <ListItemText primary="My Books" />
+              </ListItem>
+              <ListItem
+                button
+                onClick={() => {
+                  setMobileAnchorEl(null);
+                  Cookies.remove("bookstr.access_token", {
+                    path: "/",
+                  });
+                  Router.push("/");
+                }}
+              >
+                <ListItemIcon>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText primary="Logout" />
+              </ListItem>
+            </div>
+          )}
+          {!loggedIn && (
+            <div>
+              <ListItem
+                button
+                onClick={() => {
+                  setMobileAnchorEl(null);
+                  Router.push("/login");
+                }}
+              >
+                <ListItemIcon>
+                  <LoginIcon />
+                </ListItemIcon>
+                <ListItemText primary="Login" />
+              </ListItem>
+              <ListItem
+                button
+                onClick={() => {
+                  setMobileAnchorEl(null);
+                  Router.push("/register");
+                }}
+              >
+                <ListItemIcon>
+                  <RegisterIcon />
+                </ListItemIcon>
+                <ListItemText primary="Register" />
+              </ListItem>
+            </div>
+          )}
+        </List>
+      </Drawer>
     </div>
   );
 }
