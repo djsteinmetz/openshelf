@@ -13,6 +13,7 @@ import LogoutIcon from "@material-ui/icons/ExitToApp";
 import HomeIcon from "@material-ui/icons/Home";
 import BookIcon from "@material-ui/icons/LibraryBooks";
 import MyBooksIcon from "@material-ui/icons/Book";
+import AddBookIcon from '@material-ui/icons/AddBox'
 
 import {
   AppBar,
@@ -254,6 +255,18 @@ export default function Nav() {
           </ListItem>
           {loggedIn && (
             <div>
+              <ListItem
+                button
+                onClick={() => {
+                  setMobileAnchorEl(null);
+                  Router.push("/new");
+                }}
+              >
+                <ListItemIcon>
+                  <AddBookIcon />
+                </ListItemIcon>
+                <ListItemText primary="Add a Book" />
+              </ListItem>
               <ListItem
                 button
                 onClick={() => {
