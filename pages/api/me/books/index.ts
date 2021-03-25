@@ -6,10 +6,8 @@ var { verify } = require("jsonwebtoken");
 
 const handler: NextApiHandler = async (_, res) => {
   const cookie = parse(_.headers.cookie)['bookstr.access_token']
-  console.log(cookie)
   try {
       const decoded = verify(cookie, process.env.NEXT_PUBLIC_API_SECRET);
-      console.log('!!!!!', decoded)
       if (_?.query?.search && _?.query?.search !== "") {
         const search = _?.query?.search;
         try {

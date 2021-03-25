@@ -86,7 +86,6 @@ export default function LoginForm() {
         });
       }
     } catch (e) {
-      console.log(e)
       setErrMessage('Oops! Something went wrong.')
       setOpen(true)
     }
