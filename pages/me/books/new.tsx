@@ -1,4 +1,3 @@
-import Nav from '@/components/nav'
 import Container from '@/components/container'
 import BookForm from '@/components/book-form'
 
