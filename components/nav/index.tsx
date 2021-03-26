@@ -7,14 +7,8 @@ import { isAdminUser, isLoggedIn } from "helpers/auth.helpers";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import SearchIcon from "@material-ui/icons/Search";
-import LoginIcon from "@material-ui/icons/LockOpen";
-import RegisterIcon from "@material-ui/icons/PersonAdd";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
 import HomeIcon from "@material-ui/icons/Home";
 import BookIcon from "@material-ui/icons/LibraryBooks";
-import MyBooksIcon from "@material-ui/icons/Book";
-import AddBookIcon from "@material-ui/icons/AddBox";
-
 import {
   AppBar,
   Button,
@@ -137,41 +131,65 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem
-        onClick={() => {
-          handleMenuClose();
-          Router.push("/me");
-        }}
-      >
-        Profile
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleMenuClose();
-          Router.push("/me/books");
-        }}
-      >
-        My Books
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleMenuClose();
-          Router.push("/me/books/new");
-        }}
-      >
-        Add Book
-      </MenuItem>
-      <MenuItem
-        onClick={() => {
-          handleMenuClose();
-          Cookies.remove("bookstr.access_token", {
-            path: "/",
-          });
-          Router.push("/");
-        }}
-      >
-        Logout
-      </MenuItem>
+      {loggedIn && (
+        <div>
+          <MenuItem
+            onClick={() => {
+              handleMenuClose();
+              Router.push("/me");
+            }}
+          >
+            Profile
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleMenuClose();
+              Router.push("/me/books");
+            }}
+          >
+            My Books
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleMenuClose();
+              Router.push("/me/books/new");
+            }}
+          >
+            Add Book
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleMenuClose();
+              Cookies.remove("bookstr.access_token", {
+                path: "/",
+              });
+              Router.push("/");
+            }}
+          >
+            Logout
+          </MenuItem>
+        </div>
+      )}
+      {!loggedIn && (
+        <div>
+          <MenuItem
+            onClick={() => {
+              setAnchorEl(null);
+              Router.push("/login");
+            }}
+          >
+            Login
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setAnchorEl(null);
+              Router.push("/register");
+            }}
+          >
+            Register
+          </MenuItem>
+        </div>
+      )}
     </Menu>
   );
 
@@ -216,29 +234,15 @@ export default function Nav() {
             </div>
           </div>
           <div className="flex-grow"></div>
-          {!loggedIn && (
-            <div className="hidden md:block">
-              <Link href="/login">
-                <Button color="inherit">Login</Button>
-              </Link>
-              <Link href="/register">
-                <Button color="inherit">Register</Button>
-              </Link>
-            </div>
-          )}
-          {loggedIn && (
-            <div>
-              <IconButton
-                onClick={handleMenuOpen}
-                aria-label="account of current user"
-                aria-controls="primary-search-account-menu"
-                aria-haspopup="true"
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </div>
-          )}
+          <IconButton
+            onClick={handleMenuOpen}
+            aria-label="account of current user"
+            aria-controls="primary-search-account-menu"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
         </Toolbar>
         <div className="block md:hidden">
           <Toolbar>
@@ -293,34 +297,6 @@ export default function Nav() {
             </ListItemIcon>
             <ListItemText primary="Browse Books" />
           </ListItem>
-          {!loggedIn && (
-            <div>
-              <ListItem
-                button
-                onClick={() => {
-                  setMobileAnchorEl(null);
-                  Router.push("/login");
-                }}
-              >
-                <ListItemIcon>
-                  <LoginIcon />
-                </ListItemIcon>
-                <ListItemText primary="Login" />
-              </ListItem>
-              <ListItem
-                button
-                onClick={() => {
-                  setMobileAnchorEl(null);
-                  Router.push("/register");
-                }}
-              >
-                <ListItemIcon>
-                  <RegisterIcon />
-                </ListItemIcon>
-                <ListItemText primary="Register" />
-              </ListItem>
-            </div>
-          )}
         </List>
       </Drawer>
     </div>
