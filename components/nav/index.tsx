@@ -13,7 +13,7 @@ import LogoutIcon from "@material-ui/icons/ExitToApp";
 import HomeIcon from "@material-ui/icons/Home";
 import BookIcon from "@material-ui/icons/LibraryBooks";
 import MyBooksIcon from "@material-ui/icons/Book";
-import AddBookIcon from '@material-ui/icons/AddBox'
+import AddBookIcon from "@material-ui/icons/AddBox";
 
 import {
   AppBar,
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     menuButton: {
-      marginLeft: theme.spacing(2),
+      marginRight: theme.spacing(2),
     },
     search: {
       position: "relative",
@@ -137,12 +137,18 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {/* <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem> */}
       <MenuItem
         onClick={() => {
           handleMenuClose();
-          Router.push("/books/my-books");
+          Router.push("/me");
+        }}
+      >
+        Profile
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          Router.push("/me/books");
         }}
       >
         My Books
@@ -150,7 +156,7 @@ export default function Nav() {
       <MenuItem
         onClick={() => {
           handleMenuClose();
-          Router.push("/new");
+          Router.push("/me/books/new");
         }}
       >
         Add Book
@@ -173,30 +179,6 @@ export default function Nav() {
     <div className={classes.root}>
       <AppBar position="static" color="secondary">
         <Toolbar>
-          <div className="hidden md:block">
-            <Link href="/">
-              <Typography className={classes.branding} variant="h5">
-                BOOKSTR
-              </Typography>
-            </Link>
-          </div>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search Title or Author"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-              onChange={(e) => {
-                onSearch(e);
-              }}
-            />
-          </div>
-          <div className="flex-grow"></div>
           <div className="block md:hidden">
             <IconButton
               edge="start"
@@ -208,6 +190,32 @@ export default function Nav() {
               <MenuIcon />
             </IconButton>
           </div>
+          <div>
+            <Link href="/">
+              <Typography className={classes.branding} variant="h5">
+                BOOKSTR
+              </Typography>
+            </Link>
+          </div>
+          <div className="hidden md:block">
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search Title or Author"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+                onChange={(e) => {
+                  onSearch(e);
+                }}
+              />
+            </div>
+          </div>
+          <div className="flex-grow"></div>
           {!loggedIn && (
             <div className="hidden md:block">
               <Link href="/login">
@@ -219,24 +227,44 @@ export default function Nav() {
             </div>
           )}
           {loggedIn && (
-            <div className="hidden md:block">
+            <div>
               <IconButton
-              onClick={handleMenuOpen}
-              aria-label="account of current user"
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+                onClick={handleMenuOpen}
+                aria-label="account of current user"
+                aria-controls="primary-search-account-menu"
+                aria-haspopup="true"
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
             </div>
           )}
         </Toolbar>
+        <div className="block md:hidden">
+          <Toolbar>
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <InputBase
+                placeholder="Search Title or Author"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+                onChange={(e) => {
+                  onSearch(e);
+                }}
+              />
+            </div>
+          </Toolbar>
+        </div>
       </AppBar>
       {renderMenu}
       <Drawer
         className={classes.list}
-        anchor="right"
+        anchor="left"
         open={isMobileMenuOpen}
         onClose={() => setMobileAnchorEl(null)}
       >
@@ -253,61 +281,18 @@ export default function Nav() {
             </ListItemIcon>
             <ListItemText primary="Home" />
           </ListItem>
-          {loggedIn && (
-            <div>
-              <ListItem
-                button
-                onClick={() => {
-                  setMobileAnchorEl(null);
-                  Router.push("/new");
-                }}
-              >
-                <ListItemIcon>
-                  <AddBookIcon />
-                </ListItemIcon>
-                <ListItemText primary="Add a Book" />
-              </ListItem>
-              <ListItem
-                button
-                onClick={() => {
-                  setMobileAnchorEl(null);
-                  Router.push("/books");
-                }}
-              >
-                <ListItemIcon>
-                  <BookIcon />
-                </ListItemIcon>
-                <ListItemText primary="Browse Books" />
-              </ListItem>
-              <ListItem
-                button
-                onClick={() => {
-                  setMobileAnchorEl(null);
-                  Router.push("/books/my-books");
-                }}
-              >
-                <ListItemIcon>
-                  <MyBooksIcon />
-                </ListItemIcon>
-                <ListItemText primary="My Books" />
-              </ListItem>
-              <ListItem
-                button
-                onClick={() => {
-                  setMobileAnchorEl(null);
-                  Cookies.remove("bookstr.access_token", {
-                    path: "/",
-                  });
-                  Router.push("/");
-                }}
-              >
-                <ListItemIcon>
-                  <LogoutIcon />
-                </ListItemIcon>
-                <ListItemText primary="Logout" />
-              </ListItem>
-            </div>
-          )}
+          <ListItem
+            button
+            onClick={() => {
+              setMobileAnchorEl(null);
+              Router.push("/books");
+            }}
+          >
+            <ListItemIcon>
+              <BookIcon />
+            </ListItemIcon>
+            <ListItemText primary="Browse Books" />
+          </ListItem>
           {!loggedIn && (
             <div>
               <ListItem

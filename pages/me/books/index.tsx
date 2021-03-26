@@ -14,7 +14,7 @@ export default function Bookshelf() {
   if (isLoading) {
     return (
       <div>
-        <Container>
+        <Container className="mt-6">
           <Skeleton width={180} height={24} />
           <Skeleton height={48} />
           <div className="my-4" />

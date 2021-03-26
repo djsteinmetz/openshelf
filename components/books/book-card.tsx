@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme: Theme) =>
       marginBottom: theme.spacing(2),
     },
     cardContent: {
-      padding: '0 16px 16px 16px'
+      padding: "0 16px 16px 16px",
     },
     cardBody: {
       display: "flex",
@@ -48,12 +48,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     verified: {
       color: theme.palette.primary.main,
-      fontSize: '1rem'
+      fontSize: "1rem",
     },
     readMore: {
-      cursor: 'pointer',
+      cursor: "pointer",
       marginTop: theme.spacing(1),
-    }
+    },
   })
 );
 
@@ -64,59 +64,66 @@ export default function BookCard({ book }) {
 
   return (
     book && (
-        <Card className={classes.root}>
-          <CardHeader
-            avatar={
-              <Badge
-                overlap="circle"
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                badgeContent={
-                  book?.OwnerVerified && (
-                    <VerifiedIcon
-                      fontSize="small"
-                      className={classes.verified}
-                    />
-                  )
-                }
-              >
-                <Avatar aria-label="book owner" className={classes.avatar}>
-                  {initial}
-                </Avatar>
-              </Badge>
-            }
-            title={book.OwnerFullName}
-            subheader={`Added ${dateAdded}`}
-          />
-          <div className={classes.cardBody}>
-            <div>
-              <CardMedia
-                className={classes.media}
-                image={book.ImageURL}
-                title="Book Image"
-              />
-            </div>
-            <CardContent className={classes.cardContent}>
+      <Card className={classes.root}>
+        <CardHeader
+          avatar={
+            <Badge
+              overlap="circle"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              badgeContent={
+                book?.OwnerVerified && (
+                  <VerifiedIcon fontSize="small" className={classes.verified} />
+                )
+              }
+            >
+              <Avatar aria-label="book owner" className={classes.avatar}>
+                {initial}
+              </Avatar>
+            </Badge>
+          }
+          title={book.OwnerFullName}
+          subheader={`Added ${dateAdded}`}
+        />
+        <div className={classes.cardBody}>
+          <div>
+            <CardMedia
+              className={classes.media}
+              image={book.ImageURL}
+              title="Book Image"
+            />
+          </div>
+          <CardContent className={classes.cardContent}>
+            <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
               <Typography variant="h5" color="textSecondary" component="p">
                 {book.Title}
               </Typography>
+            </Link>
+            <Typography
+              className={classes.author}
+              variant="body1"
+              color="textSecondary"
+              component="p"
+            >
+              {book.Author}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {book.Description}
+            </Typography>
+            <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
               <Typography
-                className={classes.author}
-                variant="body1"
+                className={classes.readMore}
                 color="textSecondary"
-                component="p"
+                variant="body2"
               >
-                {book.Author}
+                Read More &gt;
               </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {book.Description}
-              </Typography>
-              <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}><Typography className={classes.readMore} color="textSecondary" variant="body2">Read More &gt;</Typography></Link>
-            </CardContent>
-          </div>
-        </Card>
+            </Link>
+          </CardContent>
+        </div>
+      </Card>
     )
   );
 }
