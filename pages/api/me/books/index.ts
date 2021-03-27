@@ -38,11 +38,7 @@ const handler: NextApiHandler = async (_, res) => {
             Books.Author
           LIKE
             '%${search}%'
-          OR
-            Books.OwnerID
-          LIKE
-            '%${search}%'
-          WHERE 
+          AND 
             Books.OwnerID = ?
           ORDER BY 
             Books.Title 

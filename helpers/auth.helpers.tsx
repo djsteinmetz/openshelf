@@ -6,6 +6,7 @@ import {
 const { verify } = require("jsonwebtoken");
 import { AuthError } from "models/errors.interface";
 import { IDecodedToken } from "models/decoded-token.interface";
+import { IUser } from "models/users.interface";
 
 export const isAuthenticated = (fn: NextApiHandler) => async (
   req: NextApiRequest,
@@ -83,3 +84,16 @@ export const isAdminUser = (token: string): boolean => {
   );
   return isAdmin;
 };
+
+export const getProfileGreeting = () :string => {
+  let greeting = `Good`
+  const time = new Date().toLocaleString('en-US', { hour: 'numeric', hour12: true });
+  const afternoonOrEvening = Number(time.split(' ')[0]) >= 4 ? `Evening` : `Afternoon`
+  return time.includes('AM') ? `${greeting} Morning` : `${greeting} ${afternoonOrEvening}`
+}
+
+export const getInitials = (FullName: string): string => {
+  return FullName?.split(" ")
+    .map((s) => s.charAt(0))
+    ?.join("");
+}

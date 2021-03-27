@@ -4,6 +4,7 @@ import { Typography } from "@material-ui/core";
 import React, { useContext, useEffect } from "react";
 import Router from 'next/router'
 import Skeleton from "react-loading-skeleton";
+import { getProfileGreeting } from "helpers/auth.helpers";
 
 export default function Me() {
     const { user, loadingUser } = useContext(UserContext)
@@ -12,12 +13,6 @@ export default function Me() {
             Router.push('/login')
         }
     })
-    const getProfileGreeting = () :string => {
-        let greeting = `Good`
-        const time = new Date().toLocaleString('en-US', { hour: 'numeric', hour12: true });
-        const afternoonOrEvening = Number(time.split(' ')[0]) >= 4 ? `Evening` : `Afternoon`
-        return time.includes('AM') ? `${greeting} Morning` : `${greeting} ${afternoonOrEvening}`
-    }
 
     if (loadingUser || !user) {
         return (
@@ -35,7 +30,7 @@ export default function Me() {
     }
     return (
         <Container className="mt-6">
-            <Typography variant="h5" className="text-center">{getProfileGreeting()}, {user?.FullName}</Typography>
+            <Typography variant="h5" className="text-center">{getProfileGreeting()}, {user?.FullName?.split(' ')?.[0]}</Typography>
             <Typography variant="h6" className="text-center">{user?.ID}</Typography>
             <Typography variant="body1" className="text-center">{user?.Email}</Typography>
         </Container>

@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import Router from "next/router";
 import React, { useContext, useEffect } from "react";
 import cookie from "cookie";
-import { isAdminUser, isLoggedIn } from "helpers/auth.helpers";
+import { getInitials, getProfileGreeting, isAdminUser, isLoggedIn } from "helpers/auth.helpers";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import SearchIcon from "@material-ui/icons/Search";
@@ -31,11 +31,15 @@ import {
 } from "@material-ui/core";
 import { useSearch } from "@/lib/search";
 import { UserContext } from "@/lib/user-context";
+import Logo from "../logo";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+    },
+    appBar: {
+      backgroundColor: theme.palette.common.white,
     },
     branding: {
       fontWeight: "bold",
@@ -43,14 +47,15 @@ const useStyles = makeStyles((theme: Theme) =>
       marginRight: theme.spacing(2),
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      // marginRight: theme.spacing(2),
     },
     search: {
       position: "relative",
+      color: theme.palette.grey[900],
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      backgroundColor: fade(theme.palette.secondary.main, 0.15),
       "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
+        backgroundColor: fade(theme.palette.secondary.main, 0.25),
       },
       // marginRight: theme.spacing(2),
       marginLeft: 0,
@@ -90,13 +95,17 @@ const useStyles = makeStyles((theme: Theme) =>
       width: "auto",
     },
     avatar: {
-      backgroundColor: theme.palette.grey[900],
+      backgroundColor: theme.palette.secondary.contrastText,
     },
+    logo: {
+      maxWidth: '120px',
+      cursor: 'pointer'
+    }
   })
 );
 
 export default function Nav() {
-  const { onSearch } = useSearch();
+  const { search, setSearch, onSearch } = useSearch();
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -137,8 +146,11 @@ export default function Nav() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {loggedIn && (
+      {loggedIn && !loadingUser && (
         <div>
+          <MenuItem disabled>
+          {`${getProfileGreeting()}, ${user?.FullName?.split(' ')?.[0]}`}
+          </MenuItem>
           <MenuItem
             onClick={() => {
               handleMenuClose();
@@ -200,32 +212,26 @@ export default function Nav() {
     </Menu>
   );
 
-  const userInitials = user?.FullName?.split(" ")
-    .map((s) => s.charAt(0))
-    ?.join("");
-
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="secondary">
+      <AppBar position="static" className={classes.appBar} elevation={1}>
         <Toolbar>
           <div className="block md:hidden">
             <IconButton
               edge="start"
               className={classes.menuButton}
-              color="inherit"
+              color="primary"
               aria-label="open drawer"
               onClick={(e) => setMobileAnchorEl(e.currentTarget)}
             >
               <MenuIcon />
             </IconButton>
           </div>
-          <div>
-            <Link href="/">
-              <Typography className={classes.branding} variant="h5">
-                BOOKSTR
-              </Typography>
-            </Link>
-          </div>
+          <Link href="/">
+            <div className={classes.logo}>
+                <Logo />
+            </div>
+          </Link>
           <div className="hidden md:block">
             <div className={classes.search}>
               <div className={classes.searchIcon}>
@@ -241,6 +247,7 @@ export default function Nav() {
                 onChange={(e) => {
                   onSearch(e);
                 }}
+                value={search}
               />
             </div>
           </div>
@@ -251,10 +258,10 @@ export default function Nav() {
               aria-label="account of current user"
               aria-controls="primary-search-account-menu"
               aria-haspopup="true"
-              color="inherit"
+              color="primary"
             >
-              {userInitials ? (
-                <Avatar className={classes.avatar}>{userInitials}</Avatar>
+              {user ? (
+                <Avatar className={classes.avatar}>{getInitials(user?.FullName)}</Avatar>
               ) : (
                 <AccountCircle />
               )}
@@ -277,6 +284,7 @@ export default function Nav() {
                 onChange={(e) => {
                   onSearch(e);
                 }}
+                value={search}
               />
             </div>
           </Toolbar>
