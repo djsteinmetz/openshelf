@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Cookies from "js-cookie";
 import Router from "next/router";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import cookie from "cookie";
 import { isAdminUser, isLoggedIn } from "helpers/auth.helpers";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -27,8 +27,10 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Avatar,
 } from "@material-ui/core";
 import { useSearch } from "@/lib/search";
+import { UserContext } from "@/lib/user-context";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -87,6 +89,9 @@ const useStyles = makeStyles((theme: Theme) =>
     list: {
       width: "auto",
     },
+    avatar: {
+      backgroundColor: theme.palette.grey[900],
+    },
   })
 );
 
@@ -95,6 +100,7 @@ export default function Nav() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { user, setUser, loadingUser } = useContext(UserContext);
   const [
     mobileAnchorEl,
     setMobileAnchorEl,
@@ -163,6 +169,7 @@ export default function Nav() {
               Cookies.remove("bookstr.access_token", {
                 path: "/",
               });
+              setUser(null);
               Router.push("/");
             }}
           >
@@ -192,6 +199,10 @@ export default function Nav() {
       )}
     </Menu>
   );
+
+  const userInitials = user?.FullName?.split(" ")
+    .map((s) => s.charAt(0))
+    ?.join("");
 
   return (
     <div className={classes.root}>
@@ -234,15 +245,21 @@ export default function Nav() {
             </div>
           </div>
           <div className="flex-grow"></div>
-          <IconButton
-            onClick={handleMenuOpen}
-            aria-label="account of current user"
-            aria-controls="primary-search-account-menu"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
+          {!loadingUser && (
+            <IconButton
+              onClick={handleMenuOpen}
+              aria-label="account of current user"
+              aria-controls="primary-search-account-menu"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              {userInitials ? (
+                <Avatar className={classes.avatar}>{userInitials}</Avatar>
+              ) : (
+                <AccountCircle />
+              )}
+            </IconButton>
+          )}
         </Toolbar>
         <div className="block md:hidden">
           <Toolbar>

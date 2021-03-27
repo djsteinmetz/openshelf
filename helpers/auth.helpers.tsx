@@ -2,7 +2,6 @@ import {
   NextApiHandler,
   NextApiRequest,
   NextApiResponse,
-  NextPageContext,
 } from "next";
 const { verify } = require("jsonwebtoken");
 import { AuthError } from "models/errors.interface";
@@ -78,7 +77,6 @@ export const isAdminUser = (token: string): boolean => {
     process.env.NEXT_PUBLIC_API_SECRET,
     async function (err: Error, decoded: IDecodedToken) {
       if (!err && decoded && decoded?.roles?.includes("ADMIN")) {
-        console.log(decoded?.roles?.includes("ADMIN"));
         isAdmin = true;
       }
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Router from "next/router";
 import Cookies from "js-cookie";
 import { TokenResponse } from "models/token-response.interface";
@@ -13,6 +13,7 @@ import {
   CssBaseline,
 } from "@material-ui/core";
 import BookstrSnackbar from "../snackbar";
+import { UserContext } from "@/lib/user-context";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,8 +40,8 @@ export default function LoginForm() {
   const [Password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = React.useState(false);
-  const [errMessage, setErrMessage] = React.useState('');
-  
+  const [errMessage, setErrMessage] = React.useState("");
+  const { setUser } = useContext(UserContext);
   const classes = useStyles();
 
   const setAuthCookie = async (token: string) => {
@@ -76,45 +77,53 @@ export default function LoginForm() {
       });
       setSubmitting(false);
       const json: TokenResponse = await res.json();
+
       if (res.status === 401) {
-        setErrMessage('Incorrect Username or Password')
-        setOpen(true)
+        setErrMessage("Incorrect Username or Password");
+        setOpen(true);
       }
       if (json && json?.access_token) {
-        await setAuthCookie(json.access_token).then(() => {
-          Router.push("/");
+        await setAuthCookie(json.access_token);
+        const getUser = await fetch(`/api/me`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
         });
+        const user = await getUser.json();
+        setUser(user);
+        Router.push("/");
       }
     } catch (e) {
-      setErrMessage('Oops! Something went wrong.')
-      setOpen(true)
+      setErrMessage("Oops! Something went wrong.");
+      setOpen(true);
     }
   }
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
-    <div className={classes.paper}>
-      <Avatar className={classes.avatar}>
-        <LockOutlinedIcon />
-      </Avatar>
-      <Typography component="h1" variant="h5">
-        Sign in
-      </Typography>
-      <form onSubmit={submitHandler}>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="Email"
-          name="email"
-          autoComplete="email"
-          autoFocus
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <form onSubmit={submitHandler}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
             variant="outlined"
             margin="normal"
             required
@@ -126,8 +135,8 @@ export default function LoginForm() {
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
           />
-      <Button
-            disabled={submitting} 
+          <Button
+            disabled={submitting}
             type="submit"
             fullWidth
             variant="contained"
@@ -136,9 +145,13 @@ export default function LoginForm() {
           >
             {submitting ? "Logging In ..." : "Log In"}
           </Button>
-      </form>
-    </div>
-    <BookstrSnackbar message={errMessage} open={open} handleClose={handleClose} />
+        </form>
+      </div>
+      <BookstrSnackbar
+        message={errMessage}
+        open={open}
+        handleClose={handleClose}
+      />
     </Container>
   );
 }
