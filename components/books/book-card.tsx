@@ -59,7 +59,9 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function BookCard({ book }) {
   const classes = useStyles();
-  const initial = book?.OwnerFullName?.charAt(0);
+  const userInitials = book?.OwnerFullName?.split(" ")
+    .map((s) => s.charAt(0))
+    ?.join("");
   const dateAdded = moment(book.created_at, "YYYYMMDD").fromNow();
 
   return (
@@ -80,7 +82,7 @@ export default function BookCard({ book }) {
               }
             >
               <Avatar aria-label="book owner" className={classes.avatar}>
-                {initial}
+                {userInitials}
               </Avatar>
             </Badge>
           }
@@ -89,11 +91,13 @@ export default function BookCard({ book }) {
         />
         <div className={classes.cardBody}>
           <div>
-            <CardMedia
-              className={classes.media}
-              image={book.ImageURL}
-              title="Book Image"
-            />
+            {book.ImageURL && (
+              <CardMedia
+                className={classes.media}
+                image={book.ImageURL}
+                title="Book Image"
+              />
+            )}
           </div>
           <CardContent className={classes.cardContent}>
             <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>

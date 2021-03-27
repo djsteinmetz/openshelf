@@ -1,30 +1,43 @@
-const { verify } = require('jsonwebtoken');
 import Container from "@/components/container";
+import { UserContext } from "@/lib/user-context";
 import { Typography } from "@material-ui/core";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import Router from 'next/router'
+import Skeleton from "react-loading-skeleton";
 
 export default function Me() {
-    
+    const { user, loadingUser } = useContext(UserContext)
+    useEffect(() => {
+        if (!user && !loadingUser) {
+            Router.push('/login')
+        }
+    })
+    const getProfileGreeting = () :string => {
+        let greeting = `Good`
+        const time = new Date().toLocaleString('en-US', { hour: 'numeric', hour12: true });
+        const afternoonOrEvening = Number(time.split(' ')[0]) >= 4 ? `Evening` : `Afternoon`
+        return time.includes('AM') ? `${greeting} Morning` : `${greeting} ${afternoonOrEvening}`
+    }
+
+    if (loadingUser || !user) {
+        return (
+            <Container className="mt-6">
+                <Skeleton width={180} height={24} />
+                <Skeleton height={48} />
+                <div className="my-4" />
+                <Skeleton width={180} height={24} />
+                <Skeleton height={48} />
+                <div className="my-4" />
+                <Skeleton width={180} height={24} />
+                <Skeleton height={48} />
+            </Container>
+        )
+    }
     return (
         <Container className="mt-6">
-            <Typography variant="h5" className="text-center">You are logged in!</Typography>
+            <Typography variant="h5" className="text-center">{getProfileGreeting()}, {user?.FullName}</Typography>
+            <Typography variant="h6" className="text-center">{user?.ID}</Typography>
+            <Typography variant="body1" className="text-center">{user?.Email}</Typography>
         </Container>
     )
 }
-
-export function getServerSideProps(ctx) {
-    let token = ctx?.req?.cookies?.['bookstr.access_token'];
-    try {
-        verify(token, process.env.NEXT_PUBLIC_API_SECRET, async function(err: Error, decoded: unknown) {
-            if (err || !decoded) {
-                ctx.res.statusCode = 302
-                ctx.res.setHeader('Location', `/login`) // Replace <link> with your url link
-            }
-        });
-      } catch(err) {
-        return ctx?.res.setHeader('Location', '/login');
-      }
-    return {
-      props: {}, // will be passed to the page component as props
-    }
-  }
