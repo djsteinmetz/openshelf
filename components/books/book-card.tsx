@@ -41,6 +41,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     avatar: {
       backgroundColor: theme.palette.secondary.light,
+      width: '30px',
+      height: '30px',
+      fontSize: '0.75rem',
     },
     author: {
       fontWeight: "bold",

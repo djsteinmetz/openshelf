@@ -33,10 +33,6 @@ const handler: NextApiHandler = async (_, res) => {
         Books.Author
       LIKE
         '%${search}%'
-      OR
-        Books.OwnerID
-      LIKE
-        '%${search}%'
     `)
       if (results) {
         (results as any).forEach(r => {
