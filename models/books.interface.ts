@@ -1,14 +1,13 @@
 import { NextPageContext } from "next";
 
 export interface IBook {
-    ID: string;
+    interopID: string;
     Title: string;
     Author: string;
     Description: string;
     Genre: string;
     OwnerID: string;
-    FullName: string;
-    Email: string;
+    OwnerFullName: string;
 }
 
 export interface IBooksListProps {

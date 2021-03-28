@@ -28,6 +28,7 @@ import {
   ListItemIcon,
   ListItemText,
   Avatar,
+  debounce,
 } from "@material-ui/core";
 import { useSearch } from "@/lib/search";
 import { UserContext } from "@/lib/user-context";
@@ -244,9 +245,7 @@ export default function Nav() {
                   input: classes.inputInput,
                 }}
                 inputProps={{ "aria-label": "search" }}
-                onChange={(e) => {
-                  onSearch(e);
-                }}
+                onChange={(e) => debounce(onSearch(e), 1000)}
                 value={search}
               />
             </div>

@@ -9,6 +9,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Link from "next/link";
 import VerifiedIcon from "@material-ui/icons/CheckCircle";
+import React from "react";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

@@ -51,7 +51,7 @@ export default async function getAccessToken(
           email: user.Email,
           roles: user?.Roles?.split(' ') || user?.Roles,
         };
-        const jwt = sign(claims, process.env.NEXT_PUBLIC_API_SECRET, { expiresIn: "1h" });
+        const jwt = sign(claims, process.env.NEXT_PUBLIC_API_SECRET, { expiresIn: "24h" });
         const decoded = verify(jwt, process.env.NEXT_PUBLIC_API_SECRET);
         return res
           .status(200)

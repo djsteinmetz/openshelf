@@ -14,7 +14,6 @@ const handler: NextApiHandler = async (_, res) => {
           const results = await query(`
           SELECT
             Users.FullName AS OwnerFullName, 
-            Users.Email AS OwnerEmail,
             CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
             Books.interopID, 
             Books.Title, 
