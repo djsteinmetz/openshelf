@@ -25,7 +25,9 @@ function MyApp({ Component, pageProps, }) {
   const getUserFromCookies = async (): Promise<IUser> => {
     const cookies = cookie.parse(document.cookie);
     const token = cookies["bookstr.access_token"];
-    if (!token) return null
+    if (!token) {
+      return null
+    }
     const getUser = await fetch(`/api/me`, {
       method: 'POST',
       headers: {
