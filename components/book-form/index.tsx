@@ -14,7 +14,7 @@ export default function BookForm() {
     setSubmitting(true)
     e.preventDefault()
     try {
-      const res = await fetch('/api/create-book', {
+      const res = await fetch('/api/books', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

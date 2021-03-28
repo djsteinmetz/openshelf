@@ -43,10 +43,10 @@ export default function BookForm() {
       })
       const json = await res.json()
       setSubmitting(false)
-      if (!res.ok) throw Error(json.message)
+      if (!res.ok) console.log(json.message)
       Router.push('/')
     } catch (e) {
-      throw Error(e.message)
+      console.log(e.message)
     }
   }
 
