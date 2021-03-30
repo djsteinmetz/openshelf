@@ -1,12 +1,10 @@
-import Container from '@/components/container'
+import { Container } from '@material-ui/core'
 import BookForm from '@/components/book-form'
 
 export default function NewBookPage() {
   return (
-    <>
-      <Container className="w-full lg:w-2/4">
-        <BookForm />
-      </Container>
-    </>
+    <Container className="mt-6 flex justify-center">
+      <BookForm />
+    </Container>
   )
 }
