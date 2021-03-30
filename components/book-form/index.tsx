@@ -1,14 +1,37 @@
 import { useState } from 'react'
 import Router from 'next/router'
+import {
+  TextField,
+  Button,
+  CssBaseline,
+  Container,
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  makeStyles
+} from "@material-ui/core";
+import SearchIcon from '@material-ui/icons/Search'
 
-import Button from '@/components/button'
+const useStyles = makeStyles((theme) => ({
+  bookFormContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column'
+  }
+}));
 
 export default function BookForm() {
+  const [isbnSearch, setIsbnSearch] = useState('')
+  const [isbnResult, setIsbnResult] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [description, setDescription] = useState('')
   const [genre, setGenre] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const classes = useStyles()
 
   async function submitHandler(e) {
     setSubmitting(true)
@@ -35,70 +58,86 @@ export default function BookForm() {
     }
   }
 
+  const handleISBNSearch = async () => {
+    setIsbnResult(null)
+    const result = await fetch(`/api/isbn/${isbnSearch}`);
+    const book = await result.json();
+    console.log({ book })
+    if (book) {
+      setIsbnResult(book)
+      setTitle(book?.details?.title)
+      setAuthor(book?.details?.authors?.[0]?.name)
+    }
+  }
+
   return (
     <form onSubmit={submitHandler}>
-      <div className="my-4">
-        <label htmlFor="title">
-          <h3 className="font-bold">Title</h3>
-        </label>
-        <input
+      <Container className={classes.bookFormContainer} component="main" maxWidth="sm">
+        <CssBaseline />
+        <FormControl variant="outlined" margin="normal" fullWidth>
+          <InputLabel htmlFor="search-isbn">Autofill by ISBN</InputLabel>
+          <OutlinedInput
+            id="search-isbn"
+            type="text"
+            value={isbnSearch}
+            labelWidth={115}
+            onChange={(e) => setIsbnSearch(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="search"
+                  onClick={async () => await handleISBNSearch()}
+                >
+                  <SearchIcon />
+                </IconButton>
+              </InputAdornment>
+            }
+          />
+        </FormControl>
+        {isbnSearch && (isbnResult?.details?.isbn_13?.[0] === isbnSearch) && <img src={`http://covers.openlibrary.org/b/isbn/${isbnResult?.details?.isbn_13?.[0]}-M.jpg`} />}
+
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
           id="title"
-          className="shadow border rounded w-full py-2 px-3"
-          type="text"
+          label="Title"
           name="title"
           value={title}
+          autoComplete="title"
+          autoFocus
           onChange={(e) => setTitle(e.target.value)}
         />
-      </div>
-      <div className="my-4">
-        <label htmlFor="author">
-          <h3 className="font-bold">Author</h3>
-        </label>
-        <input
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
           id="author"
-          className="shadow border rounded w-full py-2 px-3"
-          type="text"
-          name="author"
+          label="Author"
           value={author}
+          name="author"
+          autoComplete="author"
           onChange={(e) => setAuthor(e.target.value)}
         />
-      </div>
-      <div className="my-4">
-        <label htmlFor="genre">
-          <h3 className="font-bold">Genre</h3>
-        </label>
-        <select
-          id="genre"
-          className="shadow border rounded w-full py-2 px-3"
-          name="genre"
-          onChange={(e) => {
-            e.preventDefault()
-            setGenre(e.target.value);
-          }}
-        >
-          <option value={null}>Choose a genre</option>
-          <option value="Fiction">Fiction</option>
-          <option value="Non-Fiction">Non-Fiction</option>
-          <option value="Mystery">Mystery</option>
-          <option value="Young Adult">Young Adult</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div className="my-4">
-        <label htmlFor="description">
-          <h3 className="font-bold">Description</h3>
-        </label>
-        <textarea
-          className="shadow border resize-none focus:shadow-outline w-full h-48 py-2 px-3"
+        {/* <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
           id="description"
+          label="Description"
           name="description"
-          value={description}
+          autoComplete="description"
+          multiline
+          rows={5}
           onChange={(e) => setDescription(e.target.value)}
-        />
-      </div>
-      <Button disabled={submitting} type="submit">
-        {submitting ? 'Creating ...' : 'Create'}
-      </Button>
+        /> */}
+        <Button fullWidth variant="contained" disabled={submitting} type="submit">
+          {submitting ? 'Creating ...' : 'Create'}
+        </Button>
+      </Container>
     </form>
   )
 }
