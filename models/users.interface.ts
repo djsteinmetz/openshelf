@@ -6,8 +6,11 @@ export interface IUser {
     Verified: boolean;
     FullName: string;
     Email: string;
-    Password: string;
-    BookCount: number;
+    Password?: string;
+    InstagramURL: string;
+    FacebookURL: string;
+    TwitterURL: string;
+    TikTokURL: string;
     Roles: string;
 }
 

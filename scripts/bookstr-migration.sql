@@ -11,16 +11,24 @@ CREATE TABLE Users (
     Verified BOOLEAN,
     Roles TEXT,
     Favorites TEXT,
+    InstagramURL TEXT,
+    FacebookURL TEXT,
+    TikTokURL TEXT,
+    TwitterURL TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE Books (
     interopID INTEGER PRIMARY KEY AUTO_INCREMENT,
-    Title TEXT,
-    Author TEXT,
-    Description TEXT,
+    ISBN TEXT,
+    Title TEXT NOT NULL,
+    Author TEXT NOT NULL,
+    Description TEXT NOT NULL,
     Genre TEXT,
+    Status ENUM('Active', 'Selected', 'Shelved', 'Retired') /* WORK IN PROGRESS */
+    PhysicalFormat TEXT,
+    NumberOfPages TEXT,
     OwnerID TEXT REFERENCES Users(ID),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
