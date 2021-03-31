@@ -21,6 +21,10 @@ const handler: NextApiHandler = async (_, res) => {
             Books.Description, 
             Books.Genre, 
             Books.ImageURL,
+            Books.ISBN,
+            Books.Status,
+            Books.PhysicalFormat,
+            Books.NumberOfPages,
             Books.created_at,
             Books.OwnerID 
           FROM 
@@ -66,6 +70,10 @@ const handler: NextApiHandler = async (_, res) => {
             Books.Description, 
             Books.Genre, 
             Books.ImageURL,
+            Books.ISBN,
+            Books.Status,
+            Books.PhysicalFormat,
+            Books.NumberOfPages,
             Books.created_at,
             Books.OwnerID 
           FROM 

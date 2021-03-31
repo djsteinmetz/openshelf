@@ -17,8 +17,7 @@ const handleDelete = async (id: string): Promise<void> => {
       }
     })
     const json = await res.json()
-    if (!res.ok) throw Error(json.message)
-    Router.push('/books')
+    Router.push('/me/books')
   } catch (e) {
     console.log({e})
   }

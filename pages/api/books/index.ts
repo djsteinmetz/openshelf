@@ -11,7 +11,7 @@ const index = algoliaClient.initIndex("dev_Bookstr");
 
 const handler: NextApiHandler = async (_, res) => {
   // GET
-  if (!_?.query?.search) {
+  if (_.method === 'GET' && !_?.query?.search) {
     try {
       const results = await query(`
       SELECT
@@ -47,7 +47,7 @@ const handler: NextApiHandler = async (_, res) => {
   }
 
   // GET (WITH SEARCH)
-  if (_?.query?.search && _?.query?.search !== '') {
+  if (_.method === 'GET' && _?.query?.search && _?.query?.search !== '') {
     const search = _?.query?.search
     // Serach by Algolia
     index
@@ -68,18 +68,25 @@ const handler: NextApiHandler = async (_, res) => {
 
   // POST
   if (_.method === 'POST') {
+    console.log('in here, the post')
     const token = parse(_.headers.cookie)['bookstr.access_token']
+    console.log(token)
     try {
       const decodedToken: IDecodedToken = verify(token, process.env.API_SECRET);
+      console.log(decodedToken)
       const result = await query(
-        `INSERT INTO books(Title, Author, Description, Genre, OwnerID) values (?, ?, ?, ?, ?)`, [
+        `INSERT INTO books(Title, Author, ISBN, PhysicalFormat, NumberOfPages, Status, ImageURL, OwnerID) values (?, ?, ?, ?, ?, ?, ?, ?)`, [
           _.body.title,
           _.body.author,
-          _.body.description,
-          _.body.genre,
+          _.body.ISBN,
+          _.body.physicalFormat,
+          _.body.numberOfPages,
+          "Active",
+          _.body.imageURL,
           decodedToken.usr
         ]
       )
+      console.log(result)
       const book = await query(
         `SELECT
         Users.FullName AS OwnerFullName, 
@@ -91,6 +98,10 @@ const handler: NextApiHandler = async (_, res) => {
         Books.Description, 
         Books.Genre, 
         Books.ImageURL,
+        Books.ISBN,
+        Books.Status,
+        Books.PhysicalFormat,
+        Books.NumberOfPages,
         Books.created_at,
         Books.OwnerID 
       FROM 

@@ -13,7 +13,38 @@ const handler: NextApiHandler = async (req, res) => {
     if (typeof parseInt(id.toString()) !== 'number') {
       return res.status(400).json({ message: '`id` must be a number' })
     }
-    //DELETE
+
+    // GET Book by ID
+    if (req.method === 'GET') {
+      const results = await query(
+        `
+        SELECT
+          Users.FullName AS OwnerFullName, 
+          CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
+          Books.interopID, 
+          Books.Title, 
+          Books.Author, 
+          Books.Description, 
+          Books.Genre, 
+          Books.ImageURL,
+          Books.created_at,
+          Books.OwnerID 
+        FROM 
+          Users
+        INNER JOIN 
+          Books
+        ON 
+          Users.ID = Books.OwnerID
+        WHERE
+          Books.interopID = ?
+      `,
+        id
+      )
+  
+      return res.status(200).json(results[0])
+    }
+
+    //DELETE Book by ID
     if (req.method === 'DELETE') {
       const results = await query(
         `
@@ -24,34 +55,8 @@ const handler: NextApiHandler = async (req, res) => {
       )
       // Remove index from algolia
       await index.deleteObject(id)
-      res.status(202).json(results)
+      return res.status(204).json(null)
     }
-    const results = await query(
-      `
-      SELECT
-        Users.FullName AS OwnerFullName, 
-        CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
-        Books.interopID, 
-        Books.Title, 
-        Books.Author, 
-        Books.Description, 
-        Books.Genre, 
-        Books.ImageURL,
-        Books.created_at,
-        Books.OwnerID 
-      FROM 
-        Users
-      INNER JOIN 
-        Books
-      ON 
-        Users.ID = Books.OwnerID
-      WHERE
-        Books.interopID = ?
-    `,
-      id
-    )
-
-    return res.json(results[0])
   } catch (e) {
     res.status(500).json({ message: e.message })
   }
