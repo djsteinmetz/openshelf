@@ -10,13 +10,12 @@ import Button from '@/components/button'
 const handleDelete = async (id: string): Promise<void> => {
   try {
     console.log('going to delete')
-    const res = await fetch(`/api/books/${id}`, {
+    await fetch(`/api/books/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       }
     })
-    const json = await res.json()
     Router.push('/me/books')
   } catch (e) {
     console.log({e})
