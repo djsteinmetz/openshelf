@@ -72,8 +72,8 @@ export default function BookForm() {
     const book = await result.json();
     console.log({ book })
     if (book) {
-      setImageURL(`http://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`)
-      const imgRes = await fetch(`http://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`)
+      setImageURL(`https://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`)
+      const imgRes = await fetch(`https://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`)
       if (imgRes.status !== 200) {
         setImageURL('')
       }
