@@ -17,6 +17,11 @@ const useStyles = makeStyles((theme: Theme) =>
       maxWidth: "100%",
       marginBottom: theme.spacing(2),
     },
+    mediaWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      width: '100%'
+    },
     media: {
       height: "10rem",
       width: "8rem",
@@ -28,7 +33,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     cardBody: {
       display: "flex",
-      alignItems: "start",
+      flexDirection: 'column',
+      textAlign: 'center'
     },
     expand: {
       transform: "rotate(0deg)",
@@ -94,7 +100,7 @@ export default function BookCard({ book }) {
           subheader={`Added ${dateAdded}`}
         />
         <div className={classes.cardBody}>
-          <div>
+          <div className={classes.mediaWrapper}>
             {book.ImageURL && (
               <CardMedia
                 className={classes.media}
@@ -105,7 +111,7 @@ export default function BookCard({ book }) {
           </div>
           <CardContent className={classes.cardContent}>
             <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
-              <Typography variant="h5" color="textSecondary" component="p">
+              <Typography variant="h6" color="textSecondary" component="p">
                 {book.Title}
               </Typography>
             </Link>

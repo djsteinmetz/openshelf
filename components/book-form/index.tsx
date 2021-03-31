@@ -10,7 +10,8 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-  makeStyles
+  makeStyles,
+  Grid
 } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search'
 
@@ -20,6 +21,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'column'
+  },
+  submitBtn: {
+    marginTop: theme.spacing(2)
   }
 }));
 
@@ -28,8 +32,9 @@ export default function BookForm() {
   const [isbnResult, setIsbnResult] = useState(null)
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
-  const [description, setDescription] = useState('')
-  const [genre, setGenre] = useState('')
+  const [physicalFormat, setPhysicalFormat] = useState('')
+  const [numberOfPages, setNumberOfPages] = useState('')
+  const [imageURL, setImageURL] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const classes = useStyles()
 
@@ -37,6 +42,7 @@ export default function BookForm() {
     setSubmitting(true)
     e.preventDefault()
     try {
+      const ISBN = isbnResult?.details?.isbn_13?.[0]
       const res = await fetch('/api/books', {
         method: 'POST',
         headers: {
@@ -45,16 +51,18 @@ export default function BookForm() {
         body: JSON.stringify({
           title,
           author,
-          description,
-          genre,
-        }),
+          ISBN,
+          physicalFormat,
+          numberOfPages,
+          imageURL
+        })
       })
       setSubmitting(false)
       const json = await res.json()
       if (!res.ok) throw Error(json.message)
-      Router.push('/')
+      Router.push('/me/books')
     } catch (e) {
-      throw Error(e.message)
+      console.log(e?.message)
     }
   }
 
@@ -64,9 +72,22 @@ export default function BookForm() {
     const book = await result.json();
     console.log({ book })
     if (book) {
+      fetch(`http://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`).then(res => {
+        console.log(res.status)
+        if (res.status === 200) {
+          setImageURL(`http://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`)
+        }
+      })
       setIsbnResult(book)
       setTitle(book?.details?.title)
       setAuthor(book?.details?.authors?.[0]?.name)
+      let format = book?.details?.physical_format
+      if (format) {
+        format = format.charAt(0).toUpperCase() + format.slice(1)
+      }
+      setPhysicalFormat(format)
+      setNumberOfPages(book?.details?.number_of_pages)
+      console.log(title, author, physicalFormat, format, numberOfPages, imageURL)
     }
   }
 
@@ -77,6 +98,7 @@ export default function BookForm() {
         <FormControl variant="outlined" margin="normal" fullWidth>
           <InputLabel htmlFor="search-isbn">Autofill by ISBN</InputLabel>
           <OutlinedInput
+            autoFocus
             id="search-isbn"
             type="text"
             value={isbnSearch}
@@ -94,47 +116,64 @@ export default function BookForm() {
             }
           />
         </FormControl>
-        {isbnSearch && (isbnResult?.details?.isbn_13?.[0] === isbnSearch) && <img src={`http://covers.openlibrary.org/b/isbn/${isbnResult?.details?.isbn_13?.[0]}-M.jpg`} />}
-
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="title"
-          label="Title"
-          name="title"
-          value={title}
-          autoComplete="title"
-          autoFocus
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="author"
-          label="Author"
-          value={author}
-          name="author"
-          autoComplete="author"
-          onChange={(e) => setAuthor(e.target.value)}
-        />
-        {/* <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="description"
-          label="Description"
-          name="description"
-          autoComplete="description"
-          multiline
-          rows={5}
-          onChange={(e) => setDescription(e.target.value)}
-        /> */}
-        <Button fullWidth variant="contained" disabled={submitting} type="submit">
+        {isbnSearch && ((isbnResult?.details?.isbn_13?.[0] || isbnResult?.details?.isbn_10?.[0]) === isbnSearch) && <img src={`http://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`} />}
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="title"
+              label="Title"
+              name="title"
+              value={title}
+              autoComplete="title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="author"
+              label="Author"
+              value={author}
+              name="author"
+              autoComplete="author"
+              onChange={(e) => setAuthor(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="physicalFormat"
+              label="Physical Format"
+              name="physicalFormat"
+              value={physicalFormat}
+              autoComplete="physicalFormat"
+              onChange={(e) => setPhysicalFormat(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="numberOfPages"
+              label="Number of Pages"
+              value={numberOfPages}
+              name="numberOfPages"
+              autoComplete="numberOfPages"
+              onChange={(e) => setNumberOfPages(e.target.value)}
+            />
+          </Grid>
+        </Grid>
+        <Button className={classes.submitBtn} fullWidth variant="contained" disabled={submitting} type="submit">
           {submitting ? 'Creating ...' : 'Create'}
         </Button>
       </Container>
