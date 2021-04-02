@@ -2,14 +2,13 @@ import Router, { useRouter } from 'next/router'
 
 import { useBook } from '@/lib/swr-hooks'
 import Container from '@/components/container'
-import Nav from '@/components/nav'
 import { UserContext } from '@/lib/user-context'
+import Button from '@material-ui/core/Button'
 import React, { useContext } from 'react'
-import Button from '@/components/button'
+import Link from 'next/link'
 
 const handleDelete = async (id: string): Promise<void> => {
   try {
-    console.log('going to delete')
     await fetch(`/api/books/${id}`, {
       method: 'DELETE',
       headers: {
@@ -25,7 +24,6 @@ const handleDelete = async (id: string): Promise<void> => {
 export default function EditBookPage() {
   const router = useRouter()
   const route = router.basePath
-  console.log(route)
   const id = router.query.id?.toString()
   const { data } = useBook(id)
   const { user } = useContext(UserContext)
@@ -34,13 +32,14 @@ export default function EditBookPage() {
     return (
       <>
         <Container>
-          <div className="flex justify-between">
-            <h1 className="font-bold text-3xl my-2">{data.Title} by {data.Author}</h1>
+          <h1 className="font-bold text-3xl my-2">{data.Title} by {data.Author}</h1>
+          <p>{data.Description}</p>
+          <div className="flex justify-between mt-4">
+            {data.DetailsURL && <Button variant="contained"><a href={data.DetailsURL} target="_blank">More Details</a></Button>}
             {data?.OwnerID === user?.ID && (
               <Button onClick={() => handleDelete(data?.interopID)}>Delete</Button>
             )}
           </div>
-          <p>{data.Description}</p>
         </Container>
       </>
     )

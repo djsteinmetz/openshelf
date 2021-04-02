@@ -39,8 +39,8 @@ export default function LoginForm() {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [errMessage, setErrMessage] = React.useState("");
+  const [open, setOpen] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
   const { setUser } = useContext(UserContext);
   const classes = useStyles();
 

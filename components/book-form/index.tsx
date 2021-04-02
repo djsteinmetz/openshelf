@@ -9,11 +9,10 @@ import {
   InputLabel,
   OutlinedInput,
   InputAdornment,
-  IconButton,
   makeStyles,
   Grid
 } from "@material-ui/core";
-import SearchIcon from '@material-ui/icons/Search'
+import BookstrSnackbar from '@/components/snackbar'
 
 const useStyles = makeStyles((theme) => ({
   bookFormContainer: {
@@ -35,14 +34,29 @@ export default function BookForm() {
   const [physicalFormat, setPhysicalFormat] = useState('')
   const [numberOfPages, setNumberOfPages] = useState('')
   const [imageURL, setImageURL] = useState('')
+  const [detailsURL, setDetailsURL] = useState('')
+  const [genres, setGenres] = useState('')
+  const [description, setDescription] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [open, setOpen] = useState(false)
   const classes = useStyles()
+
+  const handleClose = (
+    event: React.SyntheticEvent | React.MouseEvent,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   async function submitHandler(e) {
     setSubmitting(true)
     e.preventDefault()
     try {
-      const ISBN = isbnResult?.details?.isbn_13?.[0]
+      const ISBN = isbnSearch
       const res = await fetch('/api/books', {
         method: 'POST',
         headers: {
@@ -54,7 +68,10 @@ export default function BookForm() {
           ISBN,
           physicalFormat,
           numberOfPages,
-          imageURL
+          imageURL,
+          detailsURL,
+          description,
+          genres
         })
       })
       setSubmitting(false)
@@ -69,24 +86,34 @@ export default function BookForm() {
   const handleISBNSearch = async () => {
     setIsbnResult(null)
     const result = await fetch(`/api/isbn/${isbnSearch}`);
+    if (result.status === 400) {
+      return setOpen(true);
+    }
     const book = await result.json();
-    console.log({ book })
     if (book) {
-      setImageURL(`https://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`)
-      const imgRes = await fetch(`https://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`)
+      setImageURL(`https://covers.openlibrary.org/b/id/${book?.details?.covers?.[0]}-L.jpg`)
+      const imgRes = await fetch(`https://covers.openlibrary.org/b/id/${book?.details?.covers?.[0]}-L.jpg`)
+      
       if (imgRes.status !== 200) {
         setImageURL('')
+      }
+      if (book?.description) {
+        setDescription(book?.description)
+      }
+      if (book?.subjects) {
+        const genreString = book?.subjects.join()
+        setGenres(genreString)
       }
       setIsbnResult(book)
       setTitle(book?.details?.title)
       setAuthor(book?.details?.authors?.[0]?.name)
+      setDetailsURL(book?.info_url)
       let format = book?.details?.physical_format
       if (format) {
         format = format.charAt(0).toUpperCase() + format.slice(1)
       }
       setPhysicalFormat(format)
       setNumberOfPages(book?.details?.number_of_pages)
-      console.log(title, author, physicalFormat, format, numberOfPages, imageURL)
     }
   }
 
@@ -95,27 +122,26 @@ export default function BookForm() {
       <Container className={classes.bookFormContainer} component="main" maxWidth="sm">
         <CssBaseline />
         <FormControl variant="outlined" margin="normal" fullWidth>
-          <InputLabel htmlFor="search-isbn">Autofill by ISBN</InputLabel>
+          <InputLabel htmlFor="search-isbn">ISBN *</InputLabel>
           <OutlinedInput
             autoFocus
             id="search-isbn"
+            required
             type="text"
             value={isbnSearch}
-            labelWidth={115}
-            onChange={(e) => setIsbnSearch(e.target.value)}
+            labelWidth={50}
+            onChange={(e) => {
+              setOpen(false)
+              setIsbnSearch(e.target.value)
+            }}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
-                  aria-label="search"
-                  onClick={async () => await handleISBNSearch()}
-                >
-                  <SearchIcon />
-                </IconButton>
+                <Button onClick={async () => await handleISBNSearch()} variant="contained">Autofill</Button>
               </InputAdornment>
             }
           />
         </FormControl>
-        {isbnSearch && ((isbnResult?.details?.isbn_13?.[0] || isbnResult?.details?.isbn_10?.[0]) === isbnSearch) && <img src={`http://covers.openlibrary.org/b/isbn/${isbnSearch}-M.jpg`} />}
+        {imageURL && <img src={imageURL} />}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -176,6 +202,11 @@ export default function BookForm() {
           {submitting ? 'Creating ...' : 'Create'}
         </Button>
       </Container>
+      <BookstrSnackbar
+        message={`Could not autofill for ISBN ${isbnSearch}`}
+        open={open}
+        handleClose={handleClose}
+      />
     </form>
   )
 }
