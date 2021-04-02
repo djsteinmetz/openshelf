@@ -18,10 +18,12 @@ const handler: NextApiHandler = async (_, res) => {
         Users.FullName AS OwnerFullName, 
         CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
         Books.interopID, 
+        Books.ISBN,
         Books.Title, 
         Books.Author, 
         Books.Description, 
-        Books.Genre, 
+        Books.Genres,
+        Books.DetailsURL, 
         Books.ImageURL,
         Books.created_at,
         Books.OwnerID 
@@ -53,7 +55,6 @@ const handler: NextApiHandler = async (_, res) => {
     index
       .search(search)
       .then(({ hits }) => {
-        console.log(hits);
         if (hits.length) {
           return res.status(200).json(hits)
         }
@@ -68,14 +69,11 @@ const handler: NextApiHandler = async (_, res) => {
 
   // POST
   if (_.method === 'POST') {
-    console.log('in here, the post')
     const token = parse(_.headers.cookie)['bookstr.access_token']
-    console.log(token)
     try {
       const decodedToken: IDecodedToken = verify(token, process.env.API_SECRET);
-      console.log(decodedToken)
       const result = await query(
-        `INSERT INTO books(Title, Author, ISBN, PhysicalFormat, NumberOfPages, Status, ImageURL, OwnerID) values (?, ?, ?, ?, ?, ?, ?, ?)`, [
+        `INSERT INTO books(Title, Author, ISBN, PhysicalFormat, NumberOfPages, Status, ImageURL, detailsURL, description, genres, OwnerID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
           _.body.title,
           _.body.author,
           _.body.ISBN,
@@ -83,10 +81,12 @@ const handler: NextApiHandler = async (_, res) => {
           _.body.numberOfPages,
           "Active",
           _.body.imageURL,
+          _.body.detailsURL,
+          _.body.description,
+          _.body.genres,
           decodedToken.usr
         ]
       )
-      console.log(result)
       const book = await query(
         `SELECT
         Users.FullName AS OwnerFullName, 
@@ -96,7 +96,8 @@ const handler: NextApiHandler = async (_, res) => {
         Books.Title, 
         Books.Author, 
         Books.Description, 
-        Books.Genre, 
+        Books.Genres, 
+        Books.DetailsURL,
         Books.ImageURL,
         Books.ISBN,
         Books.Status,

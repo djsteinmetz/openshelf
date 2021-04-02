@@ -22,10 +22,12 @@ const handler: NextApiHandler = async (req, res) => {
           Users.FullName AS OwnerFullName, 
           CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
           Books.interopID, 
+          Books.ISBN,
           Books.Title, 
           Books.Author, 
           Books.Description, 
-          Books.Genre, 
+          Books.Genres, 
+          Books.DetailsURL,
           Books.ImageURL,
           Books.created_at,
           Books.OwnerID 

@@ -26,7 +26,9 @@ CREATE TABLE Books (
     Author TEXT NOT NULL,
     Description TEXT NOT NULL,
     Genre TEXT,
-    Status ENUM('Active', 'Selected', 'Shelved', 'Retired') /* WORK IN PROGRESS */
+    ImageURL TEXT,
+    DetailsURL TEXT,
+    Status ENUM('Active', 'Selected', 'Shelved', 'Retired'),
     PhysicalFormat TEXT,
     NumberOfPages TEXT,
     OwnerID TEXT REFERENCES Users(ID),
