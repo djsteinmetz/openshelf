@@ -15,9 +15,9 @@ const handler: NextApiHandler = async (_, res) => {
                 await query(`
                 INSERT INTO Favorites (BookID, UserID) VALUES (?, ?)
             `, [_.query.bookID, decoded.id]);
-                return res.status(204).json({});
+                res.status(204).end()
             } catch (e) {
-                res.status(500).json({ message: e.message });
+                return res.status(500).json({ message: e.message });
             }
 
         }
@@ -30,7 +30,7 @@ const handler: NextApiHandler = async (_, res) => {
                 AND
                     UserID = ?`,
                 [_.query.bookID, decoded.id])
-            return res.status(204).json({})
+            res.status(204).end()
         }
     } catch (err) {
         return res.status(401).json({ Message: 'Unauthorized' })
