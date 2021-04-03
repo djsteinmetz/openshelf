@@ -14,7 +14,7 @@ const handler: NextApiHandler = async (req, res) => {
     const decoded = verify(cookie, process.env.NEXT_PUBLIC_API_SECRET);
     const results = await query(
       `
-      SELECT ID, Username, Active, FullName, Email, Verified, InstagramURL, TwitterURL, FacebookURL, TikTokURL
+      SELECT ID, Username, Favorites, Active, FullName, Email, Verified, InstagramURL, TwitterURL, FacebookURL, TikTokURL
       FROM users
       WHERE Username = ?
     `,

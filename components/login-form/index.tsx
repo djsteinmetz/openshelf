@@ -41,7 +41,7 @@ export default function LoginForm() {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-  const { setUser } = useContext(UserContext);
+  const { setUser, setUserFavorites} = useContext(UserContext);
   const classes = useStyles();
 
   const setAuthCookie = async (token: string) => {
@@ -85,13 +85,20 @@ export default function LoginForm() {
       if (json && json?.access_token) {
         await setAuthCookie(json.access_token);
         const getUser = await fetch(`/api/me`, {
-          method: "POST",
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
         });
         const user = await getUser.json();
-        setUser(user);
+        const getUserFavorites = await fetch(`/api/me/favorites`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const userFavs = await getUserFavorites.json();
+        setUserFavorites(userFavs);
         Router.push("/");
       }
     } catch (e) {
