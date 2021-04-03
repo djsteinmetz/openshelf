@@ -11,8 +11,9 @@ import { IUser } from 'models/users.interface';
 
 function MyApp({ Component, pageProps, }) {
   const [user, setUser] = useState(null);
+  const [userFavorites, setUserFavorites] = useState(null)
   const [loadingUser, setLoadingUser] = useState(true);
-  const value = useMemo(() => ({ user, setUser, loadingUser }), [user, setUser, loadingUser]);
+  const value = useMemo(() => ({ user, setUser, userFavorites, setUserFavorites, loadingUser }), [user, setUser, userFavorites, setUserFavorites, loadingUser]);
   useEffect(() => {
     if (!user) {
       getUserFromCookies().then((user: IUser) => {

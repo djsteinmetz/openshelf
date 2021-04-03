@@ -9,7 +9,10 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Link from "next/link";
 import VerifiedIcon from "@material-ui/icons/CheckCircle";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import FavoriteIcon from '@material-ui/icons/Favorite'
+import { IconButton } from "@material-ui/core";
+import { UserContext } from "@/lib/user-context";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -64,15 +67,72 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: "pointer",
       marginTop: theme.spacing(1),
     },
+    description: {
+      '--lh': '2rem',
+      '--max-lines': 3,
+      position: 'relative',
+      maxHeight: 'calc(var(--lh) * var(--max-lines))',
+      overflow: 'hidden',
+      '&::after': {
+        content: "''",
+        textAlign: 'right',
+        position: 'absolute',
+        bottom: 0,
+        right: 0,
+        width: '50%',
+        height: '1.2em',
+        background: 'linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%)'
+      }
+    }
   })
 );
 
-export default function BookCard({ book }) {
+export default function BookCard(props) {
+  const { book, favorited } = props
+  const { user, setUserFavorites } = useContext(UserContext)
   const classes = useStyles();
   const userInitials = book?.OwnerFullName?.split(" ")
     .map((s) => s.charAt(0))
     ?.join("");
   const dateAdded = moment(book.created_at, "YYYYMMDD").fromNow();
+
+  const addFavorite = async (id: string) => {
+    await fetch(`/api/me/favorites/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    const getUserFavorites = await fetch(`/api/me/favorites`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const userFavs = await getUserFavorites.json();
+    setUserFavorites(userFavs);
+  }
+
+  const removeFavorite = async (id: string) => {
+    try {
+      await fetch(`/api/me/favorites/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      const getUserFavorites = await fetch(`/api/me/favorites`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const userFavs = await getUserFavorites.json();
+      setUserFavorites(userFavs);
+    } catch (e) {
+      console.log({ e })
+    }
+  }
 
   return (
     book && (
@@ -95,6 +155,13 @@ export default function BookCard({ book }) {
                 {userInitials}
               </Avatar>
             </Badge>
+          }
+          action={
+            user && (
+              <IconButton onClick={async () => favorited ? removeFavorite(book.ID) : await addFavorite(book.ID)} aria-label="favorite">
+                <FavoriteIcon color={favorited ? 'error' : 'disabled'} />
+              </IconButton>
+            )
           }
           title={book.OwnerFullName}
           subheader={`Added ${dateAdded}`}
@@ -123,7 +190,7 @@ export default function BookCard({ book }) {
             >
               {book.Author}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography className={classes.description} variant="body2" color="textSecondary" component="p">
               {book.Description}
             </Typography>
             <Link href={`/books/[id]`} as={`/books/${book?.ID}`}>

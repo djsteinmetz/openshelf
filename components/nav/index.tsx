@@ -110,7 +110,7 @@ export default function Nav() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { user, setUser, loadingUser } = useContext(UserContext);
+  const { user, setUser, setUserFavorites, loadingUser } = useContext(UserContext);
   const [
     mobileAnchorEl,
     setMobileAnchorEl,
@@ -191,6 +191,7 @@ export default function Nav() {
                 path: "/",
               });
               setUser(null);
+              setUserFavorites(null)
               Router.push("/");
             }}
           >

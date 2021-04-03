@@ -1,3 +1,4 @@
+import { IUser } from 'models/users.interface'
 import useSWR from 'swr'
 
 function fetcher(url: string) {
@@ -36,26 +37,6 @@ export function useMyBooks(searchTerm?: string) {
     }
   }
   const { data, error } = useSWR(`/api/me/books`, fetcher)
-
-  return {
-    books: data,
-    isLoading: !error && !data,
-    isError: error,
-  }
-}
-
-export function useMyFavorites(searchTerm?: string) {
-  if (searchTerm) {
-    const urlEncodedSearchTerm = searchTerm.split(' ').join('%20')
-    const { data, error } = useSWR(`/api/me/favorites?search=${urlEncodedSearchTerm}`, fetcher)
-  
-    return {
-      books: data,
-      isLoading: !error && !data,
-      isError: error,
-    }
-  }
-  const { data, error } = useSWR(`/api/me/favorites`, fetcher)
 
   return {
     books: data,
