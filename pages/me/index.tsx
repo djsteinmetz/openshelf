@@ -31,7 +31,7 @@ export default function Me() {
     return (
         <Container className="mt-6">
             <Typography variant="h5" className="text-center">{getProfileGreeting()}, {user?.FullName?.split(' ')?.[0]}</Typography>
-            <Typography variant="h6" className="text-center">{user?.ID}</Typography>
+            <Typography variant="h6" className="text-center">{user?.Username}</Typography>
             <Typography variant="body1" className="text-center">{user?.Email}</Typography>
         </Container>
     )

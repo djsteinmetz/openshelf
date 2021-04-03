@@ -11,11 +11,11 @@ export default async function getAccessToken(
   if (req.method === "POST") {
     const result = await query(
       `
-            SELECT ID, Active, FullName, Email, Password, Verified, Roles
+            SELECT ID, Username, Active, FullName, Email, Password, Verified, Roles
             FROM Users
-            WHERE Email = ?
+            WHERE Username = ?
           `,
-      req.body.Email
+      req.body.Username
     );
     const user = result[0] as IUser;
     if (user === undefined) {
@@ -47,7 +47,8 @@ export default async function getAccessToken(
       }
       if (!err && result && user?.Active) {
         const claims = {
-          usr: user.ID,
+          id: user.ID,
+          usr: user.Username,
           email: user.Email,
           roles: user?.Roles?.split(' ') || user?.Roles,
         };

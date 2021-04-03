@@ -17,7 +17,7 @@ const handler: NextApiHandler = async (_, res) => {
       SELECT
         Users.FullName AS OwnerFullName, 
         CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
-        Books.interopID, 
+        Books.ID, 
         Books.ISBN,
         Books.Title, 
         Books.Author, 
@@ -84,7 +84,7 @@ const handler: NextApiHandler = async (_, res) => {
           _.body.detailsURL,
           _.body.description,
           _.body.genres,
-          decodedToken.usr
+          decodedToken.id
         ]
       )
       const book = await query(
@@ -92,7 +92,7 @@ const handler: NextApiHandler = async (_, res) => {
         Users.FullName AS OwnerFullName, 
         Users.Email AS OwnerEmail, 
         CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
-        Books.interopID, 
+        Books.ID, 
         Books.Title, 
         Books.Author, 
         Books.Description, 
@@ -112,7 +112,7 @@ const handler: NextApiHandler = async (_, res) => {
       ON 
         Users.ID = Books.OwnerID
       WHERE 
-        Books.interopID = ?`, [
+        Books.ID = ?`, [
           (result as any)?.insertId
         ]
       )
@@ -120,7 +120,7 @@ const handler: NextApiHandler = async (_, res) => {
       // Index with Algolia
       const objectToIndex = {
         ...newBook,
-        objectID: newBook.interopID
+        objectID: newBook.ID
       }
       await index.saveObject(objectToIndex)
       return res.status(201).json(newBook);

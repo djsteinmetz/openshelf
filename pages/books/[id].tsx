@@ -36,8 +36,8 @@ export default function EditBookPage() {
           <p>{data.Description}</p>
           <div className="flex justify-between mt-4">
             {data.DetailsURL && <Button variant="contained"><a href={data.DetailsURL} target="_blank">More Details</a></Button>}
-            {data?.OwnerID === user?.ID && (
-              <Button onClick={() => handleDelete(data?.interopID)}>Delete</Button>
+            {Number(data?.OwnerID) === Number(user?.ID) && (
+              <Button onClick={() => handleDelete(data?.ID)}>Delete</Button>
             )}
           </div>
         </Container>

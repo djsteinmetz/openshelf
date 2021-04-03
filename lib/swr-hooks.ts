@@ -44,6 +44,26 @@ export function useMyBooks(searchTerm?: string) {
   }
 }
 
+export function useMyFavorites(searchTerm?: string) {
+  if (searchTerm) {
+    const urlEncodedSearchTerm = searchTerm.split(' ').join('%20')
+    const { data, error } = useSWR(`/api/me/favorites?search=${urlEncodedSearchTerm}`, fetcher)
+  
+    return {
+      books: data,
+      isLoading: !error && !data,
+      isError: error,
+    }
+  }
+  const { data, error } = useSWR(`/api/me/favorites`, fetcher)
+
+  return {
+    books: data,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
 export function useBook(id: string) {
   return useSWR(`/api/books/${id}`, fetcher)
 }

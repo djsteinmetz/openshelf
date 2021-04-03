@@ -15,7 +15,7 @@ const handler: NextApiHandler = async (_, res) => {
           SELECT
             Users.FullName AS OwnerFullName, 
             CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
-            Books.interopID, 
+            Books.ID, 
             Books.Title, 
             Books.Author, 
             Books.Description, 
@@ -65,7 +65,7 @@ const handler: NextApiHandler = async (_, res) => {
             Users.FullName AS OwnerFullName, 
             Users.Email AS OwnerEmail, 
             CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
-            Books.interopID, 
+            Books.ID, 
             Books.Title, 
             Books.Author, 
             Books.Description, 
@@ -89,7 +89,7 @@ const handler: NextApiHandler = async (_, res) => {
           ORDER BY 
             Books.Title 
           ASC
-        `, [decoded.usr]);
+        `, [decoded.id]);
           if (results) {
             (results as any).forEach((r) => {
               r.OwnerVerified = booleanConversion(r.OwnerVerified);

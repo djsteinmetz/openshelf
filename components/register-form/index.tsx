@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RegisterForm() {
-  const [ID, setID] = useState("");
+  const [Username, setUsername] = useState("");
   const [FullName, setFullName] = useState("");
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
@@ -51,7 +51,7 @@ export default function RegisterForm() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ID,
+          Username,
           FullName,
           Email,
           Password,
@@ -102,7 +102,7 @@ export default function RegisterForm() {
                 label="Username"
                 name="username"
                 autoComplete="username"
-                onChange={(e) => setID(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </Grid>
           </Grid>
