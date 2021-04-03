@@ -171,6 +171,14 @@ export default function Nav() {
           <MenuItem
             onClick={() => {
               handleMenuClose();
+              Router.push("/me/favorites");
+            }}
+          >
+            My Favorites
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleMenuClose();
               Router.push("/me/books/new");
             }}
           >

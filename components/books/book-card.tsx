@@ -110,7 +110,7 @@ export default function BookCard({ book }) {
             )}
           </div>
           <CardContent className={classes.cardContent}>
-            <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
+            <Link href={`/books/[id]`} as={`/books/${book?.ID}`}>
               <Typography variant="h6" color="textSecondary" component="p">
                 {book.Title}
               </Typography>
@@ -126,7 +126,7 @@ export default function BookCard({ book }) {
             <Typography variant="body2" color="textSecondary" component="p">
               {book.Description}
             </Typography>
-            <Link href={`/books/[id]`} as={`/books/${book?.interopID}`}>
+            <Link href={`/books/[id]`} as={`/books/${book?.ID}`}>
               <Typography
                 className={classes.readMore}
                 color="textSecondary"

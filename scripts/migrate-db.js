@@ -34,8 +34,7 @@ async function migrate() {
     console.log('Dropped Users');
     await query(`
     CREATE TABLE IF NOT EXISTS Users (
-      interopID INT AUTO_INCREMENT PRIMARY KEY,
-      ID TEXT NOT NULL,
+      ID INT AUTO_INCREMENT PRIMARY KEY,
       FullName TEXT NOT NULL,
       Email TEXT NOT NULL,
       Password TEXT NOT NULL,

@@ -21,7 +21,7 @@ const handler: NextApiHandler = async (req, res) => {
         SELECT
           Users.FullName AS OwnerFullName, 
           CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
-          Books.interopID, 
+          Books.ID, 
           Books.ISBN,
           Books.Title, 
           Books.Author, 
@@ -38,7 +38,7 @@ const handler: NextApiHandler = async (req, res) => {
         ON 
           Users.ID = Books.OwnerID
         WHERE
-          Books.interopID = ?
+          Books.ID = ?
       `,
         id
       )
@@ -51,7 +51,7 @@ const handler: NextApiHandler = async (req, res) => {
       const results = await query(
         `
         DELETE FROM Books
-        WHERE interopID = ?
+        WHERE ID = ?
     `,
         id
       )

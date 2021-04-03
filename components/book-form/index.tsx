@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginBottom: theme.spacing(5)
   },
   submitBtn: {
     marginTop: theme.spacing(2)
@@ -195,6 +196,36 @@ export default function BookForm() {
               name="numberOfPages"
               autoComplete="numberOfPages"
               onChange={(e) => setNumberOfPages(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              multiline
+              rows={5}
+              id="description"
+              label="Description"
+              value={description}
+              name="description"
+              autoComplete="description"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              multiline
+              rows={5}
+              id="genres"
+              label="Genres (Separated by commas)"
+              value={genres}
+              name="genres"
+              autoComplete="genres"
+              onChange={(e) => setGenres(e.target.value)}
             />
           </Grid>
         </Grid>
