@@ -269,7 +269,7 @@ export default function Nav() {
               aria-haspopup="true"
               color="primary"
             >
-              {user ? (
+              {user?.ID ? (
                 <Avatar className={classes.avatar}>
                   {user.Email && <Gravatar default="identicon" email={user?.Email} />}
                 </Avatar>
