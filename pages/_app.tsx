@@ -16,12 +16,12 @@ function MyApp({ Component, pageProps, }) {
   const [loadingUser, setLoadingUser] = useState(true);
   const value = useMemo(() => ({ user, setUser, userFavorites, setUserFavorites, loadingUser }), [user, setUser, userFavorites, setUserFavorites, loadingUser]);
   useEffect(() => {
-    if (!user) {
+    if (!user || !userFavorites) {
       getUserFromCookies().then((res: IResponse) => {
         if (res) {
           // Set initial state values
-          setUser(res.user)
-          setUserFavorites(res.favorites)
+          setUser(res?.user)
+          setUserFavorites(res?.favorites)
           setLoadingUser(false)
         }
       })
