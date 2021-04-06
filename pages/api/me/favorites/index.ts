@@ -7,7 +7,7 @@ var { verify } = require("jsonwebtoken");
 const handler: NextApiHandler = async (_, res) => {
   const cookie = parse(_.headers.cookie)['bookstr.access_token']
   if (!cookie) {
-    return res.status(401).json({'Error': 'Unauthorized'})
+    return res.status(401).json([])
   }
   try {
     const decoded = verify(cookie, process.env.NEXT_PUBLIC_API_SECRET);
@@ -50,7 +50,7 @@ const handler: NextApiHandler = async (_, res) => {
         }
         return res.status(200).json(results);
       } catch (e) {
-        res.status(500).json({ message: e.message });
+        res.status(500).json([]);
       }
 
     }
@@ -68,7 +68,7 @@ const handler: NextApiHandler = async (_, res) => {
       return res.status(200).json({ favorites: _.body.favorites })
     }
   } catch (err) {
-    return res.status(401).json({ message: 'Unauthorized' })
+    return res.status(401).json([])
   }
 };
 

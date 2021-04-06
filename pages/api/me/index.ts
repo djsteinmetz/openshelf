@@ -9,7 +9,7 @@ const handler: NextApiHandler = async (req, res) => {
   const cookie = parse(req.headers.cookie)['bookstr.access_token']
   try {
     if (!cookie) {
-      return res.status(401).json({ message: 'Unauthorized' })
+      return res.status(401).json({})
     }
     const decoded = verify(cookie, process.env.NEXT_PUBLIC_API_SECRET);
     const results = await query(
@@ -35,7 +35,7 @@ const handler: NextApiHandler = async (req, res) => {
 
     return res.json(results[0])
   } catch (e) {
-    res.status(401).json({ message: 'Unauthorized' })
+    res.status(401).json({})
   }
 }
 
