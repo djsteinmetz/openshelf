@@ -8,6 +8,7 @@ import cookie from "cookie";
 import { useEffect, useMemo, useState } from 'react';
 import { UserContext } from '@/lib/user-context';
 import { IUser } from 'models/users.interface';
+import { IBook } from 'models/books.interface';
 
 function MyApp({ Component, pageProps, }) {
   const [user, setUser] = useState(null);
@@ -16,26 +17,44 @@ function MyApp({ Component, pageProps, }) {
   const value = useMemo(() => ({ user, setUser, userFavorites, setUserFavorites, loadingUser }), [user, setUser, userFavorites, setUserFavorites, loadingUser]);
   useEffect(() => {
     if (!user) {
-      getUserFromCookies().then((user: IUser) => {
-        setUser(user)
-        setLoadingUser(false)
+      getUserFromCookies().then((res: IResponse) => {
+        if (res) {
+          // Set initial state values
+          setUser(res.user)
+          setUserFavorites(res.favorites)
+          setLoadingUser(false)
+        }
       })
     }
   });
 
-  const getUserFromCookies = async (): Promise<IUser> => {
+  interface IResponse {
+    user: IUser,
+    favorites: IBook[]
+  }
+
+  const getUserFromCookies = async (): Promise<IResponse> => {
     const cookies = cookie.parse(document.cookie);
     const token = cookies["bookstr.access_token"];
     if (!token) {
       return null
     }
     const getUser = await fetch(`/api/me`, {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     });
-    return await getUser.json() as IUser
+    const getFavorites = await fetch(`/api/me/favorites`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const u = await getUser.json() as IUser
+    const f = await getFavorites.json() as IBook[]
+
+    return {user: u, favorites: f}
   }
 
   return (

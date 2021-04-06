@@ -9,6 +9,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import SearchIcon from "@material-ui/icons/Search";
 import HomeIcon from "@material-ui/icons/Home";
 import BookIcon from "@material-ui/icons/LibraryBooks";
+import Gravatar from 'react-gravatar'
 import {
   AppBar,
   Button,
@@ -269,7 +270,9 @@ export default function Nav() {
               color="primary"
             >
               {user ? (
-                <Avatar className={classes.avatar}>{getInitials(user?.FullName)}</Avatar>
+                <Avatar className={classes.avatar}>
+                  {user.Email && <Gravatar default="identicon" email={user?.Email} />}
+                </Avatar>
               ) : (
                 <AccountCircle />
               )}
