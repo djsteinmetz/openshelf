@@ -92,7 +92,7 @@ export default function Me() {
                 </div>
             </Container>
             <Container className={classes.favoritesContainer}>
-                <Typography className={classes.favoritesTitle} variant="h5">Your Favorites</Typography>
+                <Typography className={classes.favoritesTitle} variant="h5">Favorites</Typography>
                 <Books books={userFavorites} />
             </Container>
         </>
