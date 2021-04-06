@@ -23,6 +23,7 @@
     "next": "latest",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-gravatar": "^2.6.3",
     "react-loading-skeleton": "^2.1.1",
     "serverless-mysql": "^1.5.4",
     "swr": "^0.3.9"
