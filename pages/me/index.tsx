@@ -9,6 +9,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import InstagramIcon from '@material-ui/icons/Instagram'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
+import Link from "next/link";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -46,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.hint,
         },
         favoritesContainer: {
-            marginTop: theme.spacing(5)
+            marginBlock: theme.spacing(5)
         },
         favoritesTitle: {
             marginBottom: theme.spacing(2),
@@ -93,10 +94,18 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between'
         },
+        nullFavorites: {
+            color: theme.palette.grey[400],
+            cursor: 'pointer',
+            '&:hover': {
+                textDecoration: 'underline'
+            }
+        },
+        editIcon: {},
         '@media (max-width: 768px)': {
             profileContainer: {
-              flexDirection: 'column',
-              alignItems: 'center'
+                flexDirection: 'column',
+                alignItems: 'center'
             },
             profileInfo: {
                 textAlign: 'center'
@@ -107,7 +116,16 @@ const useStyles = makeStyles((theme: Theme) =>
             profileForm: {
                 width: '100%',
                 marginRight: theme.spacing(2)
-            }
+            },
+            editIcon: {
+                marginRight: theme.spacing(-6)
+            },
+            header: {
+                height: '75px',
+            },
+            favoritesContainer: {
+                textAlign: 'center'
+            },
         },
     })
 );
@@ -206,7 +224,7 @@ export default function Me() {
                         <div className={classes.profileInfo}>
                             <div className={classes.profileInfoNameRow}>
                                 <Typography className={classes.name} variant="h1" >{user?.FullName}</Typography>
-                                <IconButton onClick={() => setEditingUser(true)} aria-label="edit">
+                                <IconButton className={classes.editIcon} onClick={() => setEditingUser(true)} aria-label="edit">
                                     <EditIcon />
                                 </IconButton>
                             </div>
@@ -315,6 +333,7 @@ export default function Me() {
             <Container className={classes.favoritesContainer}>
                 <Typography className={classes.favoritesTitle} variant="h5">Favorites</Typography>
                 <Books books={userFavorites} />
+                {userFavorites.length <= 0 && <Typography className={classes.nullFavorites}>Hmm, you haven't chosen any favorites.  <Link href="/books"><b>Explore books now!</b></Link></Typography>}
             </Container>
         </>
     )
