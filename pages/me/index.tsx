@@ -124,6 +124,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 height: '75px',
             },
             favoritesContainer: {
+                marginBlock: theme.spacing(5),
                 textAlign: 'center'
             },
         },
