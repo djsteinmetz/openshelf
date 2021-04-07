@@ -10,10 +10,10 @@ CREATE TABLE Users (
     Verified BOOLEAN,
     Roles TEXT,
     Favorites TEXT,
-    InstagramURL TEXT,
-    FacebookURL TEXT,
-    TikTokURL TEXT,
-    TwitterURL TEXT,
+    InstagramUsername TEXT,
+    FacebookUsername TEXT,
+    TikTokUsername TEXT,
+    TwitterUsername TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );

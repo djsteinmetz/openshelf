@@ -11,10 +11,10 @@ const handler: NextApiHandler = async (req, res) => {
         Active,
         FullName,
         Email,
-        InstagramURL,
-        FacebookURL,
-        TwitterURL,
-        TikTokURL,
+        InstagramUsername,
+        FacebookUsername,
+        TwitterUsername,
+        TikTokUsername,
         CASE WHEN Verified=1 THEN 'true' ELSE 'false' END as Verified
       FROM 
         Users
