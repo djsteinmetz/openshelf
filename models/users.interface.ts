@@ -8,10 +8,10 @@ export interface IUser {
     FullName: string;
     Email: string;
     Password?: string;
-    InstagramURL: string;
-    FacebookURL: string;
-    TwitterURL: string;
-    TikTokURL: string;
+    InstagramUsername: string;
+    FacebookUsername: string;
+    TwitterUsername: string;
+    TikTokUsername: string;
     Roles: string;
 }
 
