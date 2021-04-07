@@ -48,7 +48,7 @@ export default function MyFavorites() {
   return (
     <Container className="mt-8">
       <Books books={userFavorites} />
-      {userFavorites.length <= 0 && <Typography className={classes.nullFavorites}>Hmm, you haven't chosen any favorites.  <Link href="/books"><b>Explore books now!</b></Link></Typography>}
+      {userFavorites?.length <= 0 && <Typography className={classes.nullFavorites}>Hmm, you haven't chosen any favorites.  <Link href="/books"><b>Explore books now!</b></Link></Typography>}
     </Container>
   )
 }
