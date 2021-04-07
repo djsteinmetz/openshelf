@@ -47,7 +47,8 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.text.hint,
         },
         favoritesContainer: {
-            marginBlock: theme.spacing(5)
+            marginTop: theme.spacing(5),
+            marginBottom: theme.spacing(5)
         },
         favoritesTitle: {
             marginBottom: theme.spacing(2),
@@ -124,7 +125,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 height: '75px',
             },
             favoritesContainer: {
-                marginBlock: theme.spacing(5),
                 textAlign: 'center'
             },
         },
