@@ -5,7 +5,7 @@ import { query } from "../../../../lib/db";
 var { verify } = require("jsonwebtoken");
 
 const handler: NextApiHandler = async (_, res) => {
-  const cookie = parse(_.headers.cookie)['liblst.access_token']
+  const cookie = parse(_.headers.cookie)['openshelf.access_token']
   try {
     const decoded = verify(cookie, process.env.NEXT_PUBLIC_API_SECRET);
     if (_?.query?.search && _?.query?.search !== "") {

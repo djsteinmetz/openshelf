@@ -123,7 +123,7 @@ export default function Nav() {
 
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
-    const token = cookies["liblst.access_token"];
+    const token = cookies["openshelf.access_token"];
     const authorized = isLoggedIn(token);
     const _isAdmin = isAdminUser(token);
     setLoggedIn(authorized);
@@ -188,7 +188,7 @@ export default function Nav() {
           <MenuItem
             onClick={() => {
               handleMenuClose();
-              Cookies.remove("liblst.access_token", {
+              Cookies.remove("openshelf.access_token", {
                 path: "/",
               });
               setUser(null);
@@ -239,7 +239,7 @@ export default function Nav() {
             </IconButton>
           </div>
           <Link href="/">
-            <Typography className={classes.siteTitle} variant="h5" color="primary">LIBLST</Typography>
+            <Typography className={classes.siteTitle} variant="h5" color="primary">openshelf</Typography>
           </Link>
           <div className="hidden md:block">
             <div className={classes.search}>

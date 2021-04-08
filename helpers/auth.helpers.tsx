@@ -12,7 +12,7 @@ export const isAuthenticated = (fn: NextApiHandler) => async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  let token = req?.cookies?.["liblst.access_token"];
+  let token = req?.cookies?.["openshelf.access_token"];
   if (req?.headers?.authorization) {
     token = req?.headers?.authorization?.split(" ")?.[1];
   }

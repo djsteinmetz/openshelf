@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps, }) {
 
   const getUserFromCookies = async (): Promise<IResponse> => {
     const cookies = cookie.parse(document.cookie);
-    const token = cookies["liblst.access_token"];
+    const token = cookies["openshelf.access_token"];
     if (!token) {
       return null
     }

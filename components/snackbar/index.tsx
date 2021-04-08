@@ -2,7 +2,7 @@ import { IconButton, Snackbar } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close'
 import React from "react";
 
-export default function LiblstSnackbar({ message, open, handleClose }) {
+export default function OpenShelfSnackbar({ message, open, handleClose }) {
 
   return (
     <Snackbar

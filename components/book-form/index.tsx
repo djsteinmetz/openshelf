@@ -12,7 +12,7 @@ import {
   makeStyles,
   Grid
 } from "@material-ui/core";
-import LiblstSnackbar from '@/components/snackbar'
+import OpenShelfSnackbar from '@/components/snackbar'
 
 const useStyles = makeStyles((theme) => ({
   bookFormContainer: {
@@ -233,7 +233,7 @@ export default function BookForm() {
           {submitting ? 'Creating ...' : 'Create'}
         </Button>
       </Container>
-      <LiblstSnackbar
+      <OpenShelfSnackbar
         message={`Could not autofill for ISBN ${isbnSearch}`}
         open={open}
         handleClose={handleClose}

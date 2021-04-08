@@ -2,7 +2,7 @@ import { NextApiHandler } from 'next'
 import { query } from '../../../lib/db'
 const algoliasearch = require('algoliasearch');
 const algoliaClient = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
-const index = algoliaClient.initIndex("dev_Liblst");
+const index = algoliaClient.initIndex("dev_OpenShelf");
 
 const handler: NextApiHandler = async (req, res) => {
   const { id } = req.query

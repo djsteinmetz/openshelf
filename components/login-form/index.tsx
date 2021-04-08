@@ -12,7 +12,7 @@ import {
   Container,
   CssBaseline,
 } from "@material-ui/core";
-import LiblstSnackbar from "../snackbar";
+import OpenShelfSnackbar from "../snackbar";
 import { UserContext } from "@/lib/user-context";
 
 const useStyles = makeStyles((theme) => ({
@@ -45,7 +45,7 @@ export default function LoginForm() {
   const classes = useStyles();
 
   const setAuthCookie = async (token: string) => {
-    Cookies.set("liblst.access_token", token, {
+    Cookies.set("openshelf.access_token", token, {
       path: "/",
     });
   };
@@ -154,7 +154,7 @@ export default function LoginForm() {
           </Button>
         </form>
       </div>
-      <LiblstSnackbar
+      <OpenShelfSnackbar
         message={errMessage}
         open={open}
         handleClose={handleClose}

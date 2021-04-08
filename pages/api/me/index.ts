@@ -6,7 +6,7 @@ import { booleanConversion } from 'helpers/boolean.helpers';
 
 const handler: NextApiHandler = async (req, res) => {
   // Get token from cookies
-  const cookie = parse(req.headers.cookie)['liblst.access_token']
+  const cookie = parse(req.headers.cookie)['openshelf.access_token']
   try {
     if (!cookie) {
       return res.status(401).json({})

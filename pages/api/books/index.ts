@@ -7,7 +7,7 @@ import { IBook } from 'models/books.interface';
 import { parse } from 'cookie';
 const algoliasearch = require('algoliasearch');
 const algoliaClient = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
-const index = algoliaClient.initIndex("dev_Liblst");
+const index = algoliaClient.initIndex("dev_OpenShelf");
 
 const handler: NextApiHandler = async (_, res) => {
   // GET
@@ -69,7 +69,7 @@ const handler: NextApiHandler = async (_, res) => {
 
   // POST
   if (_.method === 'POST') {
-    const token = parse(_.headers.cookie)['liblst.access_token']
+    const token = parse(_.headers.cookie)['openshelf.access_token']
     try {
       const decodedToken: IDecodedToken = verify(token, process.env.API_SECRET);
       const result = await query(

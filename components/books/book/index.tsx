@@ -12,7 +12,7 @@ function Book({ id, title, author, description, genre, owner }) {
 
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
-    const token = cookies["liblst.access_token"];
+    const token = cookies["openshelf.access_token"];
     const _isAdmin = isAdminUser(token);
     setIsAdmin(_isAdmin);
   });

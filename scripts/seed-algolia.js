@@ -10,7 +10,7 @@ const algoliaClient = algoliasearch(
   process.env.ALGOLIA_APP_ID,
   process.env.ALGOLIA_ADMIN_KEY
 );
-const index = algoliaClient.initIndex("dev_Liblst");
+const index = algoliaClient.initIndex("dev_OpenShelf");
 
 const objects = [
   {

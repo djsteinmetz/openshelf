@@ -1,6 +1,6 @@
 {
-    "name": "Liblst",
-    "short_name": "Liblst",
+    "name": "openshelf",
+    "short_name": "openshelf",
     "icons": [
         {
             "src": "./public/android-chrome-192x192.png",
