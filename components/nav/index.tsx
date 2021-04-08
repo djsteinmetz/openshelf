@@ -239,7 +239,7 @@ export default function Nav() {
             </IconButton>
           </div>
           <Link href="/">
-            <Typography className={classes.siteTitle} variant="h5" color="primary">openshelf</Typography>
+            <Typography className={classes.siteTitle} variant="h5" color="primary">OpenShelf</Typography>
           </Link>
           <div className="hidden md:block">
             <div className={classes.search}>
