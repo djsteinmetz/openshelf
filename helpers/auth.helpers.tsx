@@ -12,7 +12,7 @@ export const isAuthenticated = (fn: NextApiHandler) => async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  let token = req?.cookies?.["bookstr.access_token"];
+  let token = req?.cookies?.["liblst.access_token"];
   if (req?.headers?.authorization) {
     token = req?.headers?.authorization?.split(" ")?.[1];
   }
@@ -85,7 +85,7 @@ export const isAdminUser = (token: string): boolean => {
   return isAdmin;
 };
 
-export const getProfileGreeting = () :string => {
+export const getProfileGreeting = (): string => {
   let greeting = `Good`
   const time = new Date().toLocaleString('en-US', { hour: 'numeric', hour12: true });
   const afternoonOrEvening = Number(time.split(' ')[0]) >= 4 ? `Evening` : `Afternoon`

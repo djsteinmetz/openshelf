@@ -7,7 +7,7 @@ import { IBook } from 'models/books.interface';
 import { parse } from 'cookie';
 const algoliasearch = require('algoliasearch');
 const algoliaClient = algoliasearch(process.env.ALGOLIA_APP_ID, process.env.ALGOLIA_ADMIN_KEY);
-const index = algoliaClient.initIndex("dev_Bookstr");
+const index = algoliaClient.initIndex("dev_Liblst");
 
 const handler: NextApiHandler = async (_, res) => {
   // GET
@@ -39,7 +39,7 @@ const handler: NextApiHandler = async (_, res) => {
     `)
       if (results) {
         (results as any).forEach(r => {
-            r.OwnerVerified = booleanConversion(r.OwnerVerified)
+          r.OwnerVerified = booleanConversion(r.OwnerVerified)
         })
       }
       return res.json(results)
@@ -65,27 +65,27 @@ const handler: NextApiHandler = async (_, res) => {
         return res.status(500)
       });
 
-  } 
+  }
 
   // POST
   if (_.method === 'POST') {
-    const token = parse(_.headers.cookie)['bookstr.access_token']
+    const token = parse(_.headers.cookie)['liblst.access_token']
     try {
       const decodedToken: IDecodedToken = verify(token, process.env.API_SECRET);
       const result = await query(
         `INSERT INTO books(Title, Author, ISBN, PhysicalFormat, NumberOfPages, Status, ImageURL, detailsURL, description, genres, OwnerID) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [
-          _.body.title,
-          _.body.author,
-          _.body.ISBN,
-          _.body.physicalFormat,
-          _.body.numberOfPages,
-          "Active",
-          _.body.imageURL,
-          _.body.detailsURL,
-          _.body.description,
-          _.body.genres,
-          decodedToken.id
-        ]
+        _.body.title,
+        _.body.author,
+        _.body.ISBN,
+        _.body.physicalFormat,
+        _.body.numberOfPages,
+        "Active",
+        _.body.imageURL,
+        _.body.detailsURL,
+        _.body.description,
+        _.body.genres,
+        decodedToken.id
+      ]
       )
       const book = await query(
         `SELECT
@@ -113,8 +113,8 @@ const handler: NextApiHandler = async (_, res) => {
         Users.ID = Books.OwnerID
       WHERE 
         Books.ID = ?`, [
-          (result as any)?.insertId
-        ]
+        (result as any)?.insertId
+      ]
       )
       const newBook: IBook = book[0]
       // Index with Algolia

@@ -6,13 +6,13 @@ import ButtonLink from '@/components/button-link'
 import Button from '@/components/button'
 import { isAdminUser } from 'helpers/auth.helpers'
 
-function Book({ id,title, author, description, genre, owner }) {
+function Book({ id, title, author, description, genre, owner }) {
   const [deleting, setDeleting] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false);
-  
+
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
-    const token = cookies["bookstr.access_token"];
+    const token = cookies["liblst.access_token"];
     const _isAdmin = isAdminUser(token);
     setIsAdmin(_isAdmin);
   });
@@ -33,20 +33,20 @@ function Book({ id,title, author, description, genre, owner }) {
         </Link>
         {isAdmin && (
           <div className="flex ml-4">
-          <ButtonLink
-            href={`/bookshelf/edit/${id}?title=${title}&author=${author}&description=${description}&genre=${genre}`}
-            className="h-5 py-0 mx-1"
-          >
-            Edit
+            <ButtonLink
+              href={`/bookshelf/edit/${id}?title=${title}&author=${author}&description=${description}&genre=${genre}`}
+              className="h-5 py-0 mx-1"
+            >
+              Edit
           </ButtonLink>
-          <Button
-            disabled={deleting}
-            onClick={deleteBook}
-            className="h-5 py-0 mx-1"
-          >
-            {deleting ? 'Deleting ...' : 'Delete'}
-          </Button>
-        </div>
+            <Button
+              disabled={deleting}
+              onClick={deleteBook}
+              className="h-5 py-0 mx-1"
+            >
+              {deleting ? 'Deleting ...' : 'Delete'}
+            </Button>
+          </div>
         )}
       </div>
       <p>{description}</p>

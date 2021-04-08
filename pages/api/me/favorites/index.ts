@@ -5,7 +5,7 @@ import { query } from "../../../../lib/db";
 var { verify } = require("jsonwebtoken");
 
 const handler: NextApiHandler = async (_, res) => {
-  const cookie = parse(_.headers.cookie)['bookstr.access_token']
+  const cookie = parse(_.headers.cookie)['liblst.access_token']
   if (!cookie) {
     return res.status(401).json([])
   }

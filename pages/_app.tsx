@@ -36,7 +36,7 @@ function MyApp({ Component, pageProps, }) {
 
   const getUserFromCookies = async (): Promise<IResponse> => {
     const cookies = cookie.parse(document.cookie);
-    const token = cookies["bookstr.access_token"];
+    const token = cookies["liblst.access_token"];
     if (!token) {
       return null
     }
@@ -55,7 +55,7 @@ function MyApp({ Component, pageProps, }) {
     const u = await getUser.json() as IUser
     const f = await getFavorites.json() as IBook[]
 
-    return {user: u, favorites: f}
+    return { user: u, favorites: f }
   }
 
   return (
@@ -69,7 +69,7 @@ function MyApp({ Component, pageProps, }) {
             <Component {...pageProps} />
           </ProvideSearch>
         </UserContext.Provider>
-      {/* <Footer /> */}
+        {/* <Footer /> */}
       </ThemeProvider>
     </>
   )

@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       flexGrow: 1,
     },
+    siteTitle: {
+      fontWeight: 600,
+      cursor: 'pointer',
+    },
     appBar: {
       backgroundColor: theme.palette.common.white,
     },
@@ -98,10 +102,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     avatar: {
       backgroundColor: theme.palette.secondary.contrastText,
-    },
-    logo: {
-      maxWidth: '120px',
-      cursor: 'pointer'
     }
   })
 );
@@ -123,7 +123,7 @@ export default function Nav() {
 
   useEffect(() => {
     const cookies = cookie.parse(document.cookie);
-    const token = cookies["bookstr.access_token"];
+    const token = cookies["liblst.access_token"];
     const authorized = isLoggedIn(token);
     const _isAdmin = isAdminUser(token);
     setLoggedIn(authorized);
@@ -151,7 +151,7 @@ export default function Nav() {
       {loggedIn && !loadingUser && (
         <div>
           <MenuItem disabled>
-          {`${getProfileGreeting()}, ${user?.FullName?.split(' ')?.[0]}`}
+            {`${getProfileGreeting()}, ${user?.FullName?.split(' ')?.[0]}`}
           </MenuItem>
           <MenuItem
             onClick={() => {
@@ -188,7 +188,7 @@ export default function Nav() {
           <MenuItem
             onClick={() => {
               handleMenuClose();
-              Cookies.remove("bookstr.access_token", {
+              Cookies.remove("liblst.access_token", {
                 path: "/",
               });
               setUser(null);
@@ -239,9 +239,7 @@ export default function Nav() {
             </IconButton>
           </div>
           <Link href="/">
-            <div className={classes.logo}>
-                <Logo />
-            </div>
+            <Typography className={classes.siteTitle} variant="h5" color="primary">LIBLST</Typography>
           </Link>
           <div className="hidden md:block">
             <div className={classes.search}>

@@ -12,7 +12,7 @@ import {
   Container,
   CssBaseline,
 } from "@material-ui/core";
-import BookstrSnackbar from "../snackbar";
+import LiblstSnackbar from "../snackbar";
 import { UserContext } from "@/lib/user-context";
 
 const useStyles = makeStyles((theme) => ({
@@ -41,11 +41,11 @@ export default function LoginForm() {
   const [submitting, setSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
   const [errMessage, setErrMessage] = useState("");
-  const { setUser, setUserFavorites} = useContext(UserContext);
+  const { setUser, setUserFavorites } = useContext(UserContext);
   const classes = useStyles();
 
   const setAuthCookie = async (token: string) => {
-    Cookies.set("bookstr.access_token", token, {
+    Cookies.set("liblst.access_token", token, {
       path: "/",
     });
   };
@@ -154,7 +154,7 @@ export default function LoginForm() {
           </Button>
         </form>
       </div>
-      <BookstrSnackbar
+      <LiblstSnackbar
         message={errMessage}
         open={open}
         handleClose={handleClose}

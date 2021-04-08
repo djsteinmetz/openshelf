@@ -2,8 +2,8 @@ import { IconButton, Snackbar } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close'
 import React from "react";
 
-export default function BookstrSnackbar({message, open, handleClose}) {
-  
+export default function LiblstSnackbar({ message, open, handleClose }) {
+
   return (
     <Snackbar
       anchorOrigin={{

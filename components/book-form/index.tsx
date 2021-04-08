@@ -12,7 +12,7 @@ import {
   makeStyles,
   Grid
 } from "@material-ui/core";
-import BookstrSnackbar from '@/components/snackbar'
+import LiblstSnackbar from '@/components/snackbar'
 
 const useStyles = makeStyles((theme) => ({
   bookFormContainer: {
@@ -94,7 +94,7 @@ export default function BookForm() {
     if (book) {
       setImageURL(`https://covers.openlibrary.org/b/id/${book?.details?.covers?.[0]}-L.jpg`)
       const imgRes = await fetch(`https://covers.openlibrary.org/b/id/${book?.details?.covers?.[0]}-L.jpg`)
-      
+
       if (imgRes.status !== 200) {
         setImageURL('')
       }
@@ -233,7 +233,7 @@ export default function BookForm() {
           {submitting ? 'Creating ...' : 'Create'}
         </Button>
       </Container>
-      <BookstrSnackbar
+      <LiblstSnackbar
         message={`Could not autofill for ISBN ${isbnSearch}`}
         open={open}
         handleClose={handleClose}

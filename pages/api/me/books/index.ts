@@ -5,13 +5,13 @@ import { query } from "../../../../lib/db";
 var { verify } = require("jsonwebtoken");
 
 const handler: NextApiHandler = async (_, res) => {
-  const cookie = parse(_.headers.cookie)['bookstr.access_token']
+  const cookie = parse(_.headers.cookie)['liblst.access_token']
   try {
-      const decoded = verify(cookie, process.env.NEXT_PUBLIC_API_SECRET);
-      if (_?.query?.search && _?.query?.search !== "") {
-        const search = _?.query?.search;
-        try {
-          const results = await query(`
+    const decoded = verify(cookie, process.env.NEXT_PUBLIC_API_SECRET);
+    if (_?.query?.search && _?.query?.search !== "") {
+      const search = _?.query?.search;
+      try {
+        const results = await query(`
           SELECT
             Users.FullName AS OwnerFullName, 
             CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
@@ -48,19 +48,19 @@ const handler: NextApiHandler = async (_, res) => {
             Books.Title 
           ASC
         `, [decoded.usr]);
-          if (results) {
-            (results as any).forEach((r) => {
-              r.OwnerVerified = booleanConversion(r.OwnerVerified);
-            });
-          }
-    
-          return res.json(results);
-        } catch (e) {
-          res.status(500).json({ message: e.message });
+        if (results) {
+          (results as any).forEach((r) => {
+            r.OwnerVerified = booleanConversion(r.OwnerVerified);
+          });
         }
-      } else {
-        try {
-          const results = await query(`
+
+        return res.json(results);
+      } catch (e) {
+        res.status(500).json({ message: e.message });
+      }
+    } else {
+      try {
+        const results = await query(`
           SELECT
             Users.FullName AS OwnerFullName, 
             Users.Email AS OwnerEmail, 
@@ -90,18 +90,18 @@ const handler: NextApiHandler = async (_, res) => {
             Books.Title 
           ASC
         `, [decoded.id]);
-          if (results) {
-            (results as any).forEach((r) => {
-              r.OwnerVerified = booleanConversion(r.OwnerVerified);
-            });
-          }
-          return res.json(results);
-        } catch (e) {
-          res.status(500).json({ message: e.message });
+        if (results) {
+          (results as any).forEach((r) => {
+            r.OwnerVerified = booleanConversion(r.OwnerVerified);
+          });
         }
+        return res.json(results);
+      } catch (e) {
+        res.status(500).json({ message: e.message });
       }
-  } catch(err) {
-      return res.status(500).json({err})
+    }
+  } catch (err) {
+    return res.status(500).json({ err })
   }
 };
 

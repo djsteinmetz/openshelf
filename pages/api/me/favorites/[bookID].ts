@@ -4,9 +4,9 @@ import { query } from "../../../../lib/db";
 var { verify } = require("jsonwebtoken");
 
 const handler: NextApiHandler = async (_, res) => {
-    const cookie = parse(_.headers.cookie)['bookstr.access_token']
+    const cookie = parse(_.headers.cookie)['liblst.access_token']
     if (!cookie) {
-        return res.status(401).json({'Error': 'Unauthorized'})
+        return res.status(401).json({ 'Error': 'Unauthorized' })
     }
     try {
         const decoded = verify(cookie, process.env.NEXT_PUBLIC_API_SECRET);
