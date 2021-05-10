@@ -9,7 +9,7 @@ import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import moment from "moment";
 import Link from "next/link";
 import VerifiedIcon from "@material-ui/icons/CheckCircle";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import { IconButton } from "@material-ui/core";
 import { UserContext } from "@/lib/user-context";
