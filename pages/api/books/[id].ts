@@ -14,36 +14,24 @@ const handler: NextApiHandler = async (req, res) => {
       return res.status(400).json({ message: '`id` must be a number' })
     }
 
-    // GET Book by ID
-    if (req.method === 'GET') {
-      const results = await query(
+    // PATCH
+    if (req.method === 'PATCH') {
+      let updateString = ''
+      Object.keys(req.body).forEach((k, i) => {
+        updateString = `${updateString}${i !== 0 ? ',' : ''} ${k} = ${req.body[k] === null ? `null` : `'${req.body[k]}'`}`
+      })
+
+      await query(
         `
-        SELECT
-          Users.FullName AS OwnerFullName, 
-          CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
-          Books.ID, 
-          Books.ISBN,
-          Books.Title, 
-          Books.Author, 
-          Books.Description, 
-          Books.Genres, 
-          Books.DetailsURL,
-          Books.ImageURL,
-          Books.created_at,
-          Books.OwnerID 
-        FROM 
-          Users
-        INNER JOIN 
+        UPDATE 
           Books
-        ON 
-          Users.ID = Books.OwnerID
-        WHERE
-          Books.ID = ?
+        SET 
+          ${updateString}
+        WHERE 
+          ID = ?
       `,
         id
       )
-
-      return res.status(200).json(results[0])
     }
 
     //DELETE Book by ID
@@ -59,6 +47,41 @@ const handler: NextApiHandler = async (req, res) => {
       await index.deleteObject(id)
       return res.status(204).json(null)
     }
+
+    // GET Book by ID
+    const results = await query(
+      `
+      SELECT
+        Users.FullName AS OwnerFullName, 
+        CASE WHEN Users.Verified=1 THEN 'true' ELSE 'false' END AS OwnerVerified,
+        Books.ID, 
+        Books.ISBN,
+        Books.Title, 
+        Books.Author, 
+        Books.Description, 
+        Books.Genres, 
+        Books.DetailsURL,
+        Books.ImageURL,
+        Books.created_at,
+        Books.OwnerID 
+      FROM 
+        Users
+      INNER JOIN 
+        Books
+      ON 
+        Users.ID = Books.OwnerID
+      WHERE
+        Books.ID = ?
+    `,
+      id
+    )
+
+    // Not Found Exception
+    if (res.statusCode === 200 && !results[0]) {
+      return res.status(404).json({ "Object Not Found": `${id}` })
+    }
+
+    return res.status(200).json(results[0])
   } catch (e) {
     res.status(500).json({ message: e.message })
   }

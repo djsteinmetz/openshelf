@@ -1,50 +1,66 @@
 import { useState, useEffect } from 'react'
 import Router, { useRouter } from 'next/router'
-
-import Button from '../button'
+import Button from '@material-ui/core/Button'
+import { useBook } from '@/lib/swr-hooks'
+import ActionButtonContainer from '../action-button-container'
 
 export default function BookForm() {
   const [_title, setTitle] = useState('')
   const [_author, setAuthor] = useState('')
   const [_description, setDescription] = useState('')
-  const [_genre, setGenre] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const router = useRouter()
-  const { id, title, author, description, genre } = router.query
+  const { id } = router.query
+  const { data: book } = useBook(id as string)
+
+  const resetFields = (): void => {
+    setTitle(book?.Title)
+    setAuthor(book?.Author)
+    setDescription(book?.Description)
+  }
 
   useEffect(() => {
-    if (typeof title === 'string') {
-      setTitle(title)
+    if (!book) {
+      Router.push('/login')
     }
-    if (typeof author === 'string') {
-      setAuthor(author)
-    }
-    if (typeof description === 'string') {
-      setDescription(description)
-    }
-    if (typeof genre === 'string') {
-      setGenre(genre)
-    }
-  }, [title, author, description, genre])
+    resetFields()
+  }, [book])
 
-  async function submitHandler(e) {
+  const areChanges = (): boolean => {
+    console.log(book?.Title, _title)
+    console.log(book?.Author, _author)
+    console.log(book?.Description, _description)
+    if (book?.Title !== _title) return true
+    if (book?.Author !== _author) return true
+    if (book?.Description !== _description) return true
+    return false
+  }
+
+  const submitHandler = async (e): Promise<void> => {
     e.preventDefault()
+    const patch: any = {}
+    if (book?.Title !== _title) {
+      patch.Title = _title === '' ? null : _title
+    }
+    if (book?.Author !== _author) {
+      patch.Author = _author === '' ? null : _author
+    }
+    if (book?.Description !== _description) {
+      patch.Description = _description === '' ? null : _description
+    }
     setSubmitting(true)
     try {
-      const res = await fetch('/api/edit-book', {
+      const res = await fetch(`/api/books/${id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          id,
-          title: _title,
-        }),
+        body: JSON.stringify(patch),
       })
       const json = await res.json()
       setSubmitting(false)
       if (!res.ok) console.log(json.message)
-      Router.push('/')
+      Router.push(`/books/${id}`)
     } catch (e) {
       console.log(e.message)
     }
@@ -79,25 +95,6 @@ export default function BookForm() {
         />
       </div>
       <div className="my-4">
-        <label htmlFor="genre">
-          <h3 className="font-bold">Genre</h3>
-        </label>
-        <select
-          id="genre"
-          className="shadow border rounded w-full py-2 px-3"
-          name="genre"
-          value={_genre}
-          onChange={(e) => setGenre(e.target.value)}
-        >
-          <option value={null}>Choose a genre</option>
-          <option value="Fiction">Fiction</option>
-          <option value="Non-Fiction">Non-Fiction</option>
-          <option value="Mystery">Mystery</option>
-          <option value="Young Adult">Young Adult</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-      <div className="my-4">
         <label htmlFor="description">
           <h3 className="font-bold">Description</h3>
         </label>
@@ -109,9 +106,14 @@ export default function BookForm() {
           onChange={(e) => setDescription(e.target.value)}
         />
       </div>
-      <Button disabled={submitting} type="submit">
-        {submitting ? 'Saving ...' : 'Save'}
-      </Button>
+      <ActionButtonContainer>
+        <Button disabled={submitting || !areChanges()} type="submit" variant="contained">
+          {submitting ? 'Saving ...' : 'Save Changes'}
+        </Button>
+        {areChanges() && (
+          <Button onClick={() => resetFields()}>Discard Changes</Button>
+        )}
+      </ActionButtonContainer>
     </form>
   )
 }

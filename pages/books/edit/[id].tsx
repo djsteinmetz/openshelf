@@ -5,7 +5,6 @@ export default function EditBookPage() {
   return (
     <>
       <Container>
-        <p>Editing Book</p>
         <EditBookForm />
       </Container>
     </>

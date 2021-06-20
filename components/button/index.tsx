@@ -13,7 +13,7 @@ function Button({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'bg-black',
+        'bg-primary',
         'text-white',
         'p-2',
         'rounded',

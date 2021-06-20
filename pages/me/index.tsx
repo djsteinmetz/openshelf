@@ -10,6 +10,7 @@ import InstagramIcon from '@material-ui/icons/Instagram'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import Link from "next/link";
+import ActionButtonContainer from "@/components/action-button-container";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -90,10 +91,6 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(1),
             marginLeft: theme.spacing(0.5),
             color: theme.palette.grey[400]
-        },
-        actionBtnContainer: {
-            display: 'flex',
-            justifyContent: 'space-between'
         },
         nullFavorites: {
             color: theme.palette.grey[400],
@@ -320,13 +317,13 @@ export default function Me() {
                                     </FormControl>
                                 </Grid>
                             </Grid>
-                            <div className={classes.actionBtnContainer}>
+                            <ActionButtonContainer>
                                 <Button disabled={!areChanges() || savingChanges} type="submit" variant="contained">{savingChanges ? 'Requesting changes ...' : 'Save Changes'}</Button>
                                 <Button onClick={() => {
                                     resetFields()
                                     setEditingUser(false)
                                 }}>{areChanges() ? 'Discard Changes' : 'Cancel'}</Button>
-                            </div>
+                            </ActionButtonContainer>
                         </form>
                     )}
                 </div>
