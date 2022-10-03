@@ -1,5 +1,7 @@
 # Open Shelf Books
 
+<img width="1147" alt="OpenShelfBooks" src="https://user-images.githubusercontent.com/38231097/193627106-712b4119-4b69-4c81-aec0-817cbc529ac1.png">
+
 ## The idea
 Have you ever looked at a friend or family member and said, "Can I borrow that book?" The mission of Open Shelf Books is to open up your book collection to readers around the world.  
 
