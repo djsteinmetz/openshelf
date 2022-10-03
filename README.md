@@ -20,3 +20,9 @@ Have you ever looked at a friend or family member and said, "Can I borrow that b
 MVP has yet to be reached, but future enhancements beyond MVP would include
 - Email integration
 - Shipping integration
+
+# Contributing
+- Fork the repository
+- Work in a feature branch on your own fork
+- Make a pull request to the development branch of the main fork
+- Have a beer :beer: Thanks for contributing!
